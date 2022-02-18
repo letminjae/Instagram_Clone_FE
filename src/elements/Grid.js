@@ -49,7 +49,7 @@ const Grid = (props) => {
     borderTop: borderTop,
     borderBottom: borderBottom,
     berderLeft: berderLeft,
-    borderRight:borderRight,
+    borderRight: borderRight,
     borderRadius: borderRadius,
     minWidth: minWidth,
     minHeight: minHeight,
@@ -62,12 +62,13 @@ const Grid = (props) => {
     media: media,
     overflowy: overflowy,
     overflowx: overflowx,
-    media: media,
   };
 
   return (
     <>
-      <GridBox {...styles} onClick={_onClick}>{children}</GridBox>
+      <GridBox {...styles} onClick={_onClick}>
+        {children}
+      </GridBox>
     </>
   );
 };
@@ -83,7 +84,7 @@ Grid.defaultProps = {
   bg: false,
   _onClick: () => {},
   border: false,
-  borderTop:false,
+  borderTop: false,
   borderBottom: false,
   berderLeft: false,
   borderRight: false,
@@ -93,13 +94,13 @@ Grid.defaultProps = {
   minWidth: null, // 최소 width 값 지정
   minHeight: null,
   maxWidth: null,
-  top: null ,
+  top: null,
   left: null,
   right: null,
   bottom: null,
-  zindex:false,
-  overflowy:false,
-  overflowx:false,
+  zindex: false,
+  overflowy: false,
+  overflowx: false,
   media: "false",
 };
 
@@ -118,32 +119,30 @@ const GridBox = styled.div`
   ${(props) => (props.margin ? `margin:${props.margin};` : "")}
 ${(props) => (props.bg ? `background-color:${props.bg};` : "")}
 /* ${(props) =>
-  props.is_flex
-    ? `display: flex; align-tiems: center; justify-content: space-between;`
-    : ""} */
+    props.is_flex
+      ? `display: flex; align-tiems: center; justify-content: space-between;`
+      : ""} */
 ${(props) => (props.is_flex ? `display: flex; align-items: center;` : "")}
 ${(props) => (props.border ? `border:${props.border};` : "border: none;")}
-${(props) =>
-  props.is_fix ? ` position: fixed;   z-index: 1;` : ""}
+${(props) => (props.is_fix ? ` position: fixed;   z-index: 1;` : "")}
 ${(props) => (props.position ? `position: ${props.position};` : "")}
 ${(props) =>
-  props.borderBottom ? `border-bottom : ${props.borderBottom};` : ""}
-  ${(props) =>
-  props.borderBottom ? `border-top : ${props.borderTop};` : ""}
-  ${(props) =>
-  props.berderLeft ? `border-left : ${props.berderLeft};` : ""}
+    props.borderBottom ? `border-bottom : ${props.borderBottom};` : ""}
+  ${(props) => (props.borderBottom ? `border-top : ${props.borderTop};` : "")}
+  ${(props) => (props.berderLeft ? `border-left : ${props.berderLeft};` : "")}
 ${(props) =>
-  props.hide ? `display:none` : "none"}; // 가입양식 유효성 검사시 안내문구
+    props.hide ? `display:none` : "none"}; // 가입양식 유효성 검사시 안내문구
   min-width: ${(props) => props.minWidth};
-  max-width: ${(props) => props.maxWidth}
+  max-width: ${(props) => props.maxWidth};
   min-height: ${(props) => props.minHeight};
   z-index: ${(props) => (props.zindex ? `1;` : null)};
   border-radius: ${(props) => props.borderRadius};
-  @media (max-width:700px) {
-        width:100%;
-        padding: 0px;
-    }
-  ${(props) => (props.media ? `@media (max-width:${props.media}){display:none};` : "")}
+  @media (max-width: 700px) {
+    width: 100%;
+    padding: 0px;
+  }
+  ${(props) =>
+    props.media ? `@media (max-width:${props.media}){display:none};` : ""}
 `;
 
 export default Grid;
