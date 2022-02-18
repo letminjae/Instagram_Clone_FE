@@ -1,122 +1,101 @@
-import React from "react";
 import styled from "styled-components";
+import React from "react";
 
 const Image = (props) => {
-
   const {
-      imageType,
-      src,
-      size,
-      bgsize,
-      width,
-      height,
-      margin,
-      padding
-    } = props;
-
-  const styles = {
-    imageType,
+    shape,
     src,
     size,
-    bgsize,
-    width,
     height,
+    width,
     margin,
-    padding,
+    _onClick,
+    radius,
+    className,
+  } = props;
+
+  const styles = {
+    src: src,
+    size: size,
+    width: width,
+    height: height,
+    margin: margin,
+    _onClick: _onClick,
+    radius: radius,
+    className: className,
   };
 
-  // 로고 이미지 쓸때
-  if (imageType === "logo") {
-    return <ImageLogo {...styles}></ImageLogo>;
+  if (shape === "myIcon") {
+    return <MyProfile {...styles} onClick={_onClick} />;
   }
 
-  // 원형 이미지 : 프로필 사진, 스토리 사진 쓸때
-  if (imageType === "circle") {
-    return <ImageCircle {...styles}></ImageCircle>;
-  }
-
-  // 게시물 이미지 쓸때
-  if (imageType === "rectangle") {
+  if (shape === "rectangle") {
     return (
-      <React.Fragment>
-        <OutBox>
-          <InBox {...styles} />
-        </OutBox>
-      </React.Fragment>
+      <AspectOutter>
+        <AspectInner {...styles} />
+      </AspectOutter>
     );
   }
 
-  // 게시물 작성시 미리보기 프리뷰
-  if (imageType === "preview") {
-    return <ImageRectangle {...styles}></ImageRectangle>;
+  if (shape === "imgBtn") {
+    return (
+      <AspectOutter>
+        <ImgBtn {...styles} onClick={_onClick} />
+      </AspectOutter>
+    );
   }
-
-
   return (
-    <>
-      <OutBox>
-        <InBox {...styles} />
-      </OutBox>
-    </>
+    <React.Fragment>
+      <MyProfile {...styles} onClick={_onClick} />
+    </React.Fragment>
   );
 };
 
 Image.defaultProps = {
-  imageType: "logo",
-  src: "https://www.snsboom.co.kr/common/img/default_profile.png",
-  size: 40,
-  bgsize: "cover",
+  shape: "myIcon",
+  src: "https://fdn.gsmarena.com/imgroot/news/18/03/instagram-timeline-changes/-728/gsmarena_001.jpg",
+  size: 36,
+  _onClick: () => {},
 };
 
-//사각형 이미지일때 스타일
-const ImageRectangle = styled.div`
+const AspectOutter = styled.div`
   width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  margin: ${(props) => props.margin};
-  padding: ${(props) => props.padding};
-  background-size: ${(props) => props.bgsize};
-  background-image: url("${(props) => props.src}");
+  min-width: 250px;
 `;
 
-//로고 이미지 일때 스타일
-const ImageLogo = styled.div`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  margin: ${(props) => props.margin};
-  padding: ${(props) => props.padding};
-  background-size: ${(props) => props.bgsize};
-  background-image: url("${(props) => props.src}");
-`;
-
-//반응형
-const OutBox = styled.div`
-  width: 100%;
-`;
-
-//비율 맞추기
-const InBox = styled.div`
+const AspectInner = styled.div`
   position: relative;
-  padding-top: 100%;
-  // 요소내의 컨텐츠가 너무 커서 요소내에 모두 보여주기 힘들때 hidden 하면 넘치는 부분은 잘림
   overflow: hidden;
-  background-image: url("${(props) => props.src}");
-  background-size: ${(props) => props.bgsize};
-`;
-
-// 원형 이미지일때 스타일
-// --size 변수 쓸때 var(--size) 고고
-const ImageCircle = styled.div`
-  --size: ${(props) => props.size}px;
-  // width: 36px;
-  // height: 36px;
-  // border-radius: 36px;
-  width: var(--size);
-  height: var(--size);
-  border-radius: var(--size);
-  min-width: 36px;
-  background-image: url("${(props) => props.src}");
-  background-size: cover;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   margin: ${(props) => props.margin};
+  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
+  background-size: cover;
 `;
 
+const MyProfile = styled.div`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
+`;
+
+const ImgBtn = styled.div`
+  position: relative;
+  overflow: hidden;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  margin: ${(props) => props.margin};
+  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
+  background-size: cover;
+  &:hover {
+    opacity: 0.9;
+  }
+`;
 export default Image;
