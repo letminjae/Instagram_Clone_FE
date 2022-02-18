@@ -53,7 +53,7 @@ const Image = (props) => {
 
 Image.defaultProps = {
   shape: "myIcon",
-  src: "https://fdn.gsmarena.com/imgroot/news/18/03/instagram-timeline-changes/-728/gsmarena_001.jpg",
+  src: "https://img1.daumcdn.net/thumb/R300x0/?fname=https://k.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg",
   size: 36,
   _onClick: () => {},
 };
