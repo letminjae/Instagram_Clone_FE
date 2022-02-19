@@ -73,7 +73,7 @@ const Header = () => {
                                     width: "26px",
                                     borderRadius: "100%",
                                     cursor: "pointer",
-                                    zIndex: "10",
+                                    zIndex: "9999",
                                 }}
                                 onClick={() => setProfileButton(false)}
                             />
@@ -145,6 +145,7 @@ const Wrap = styled.div`
   background-color: #ffffff;
   border-bottom: 1px solid #dddddd;
   position: fixed;
+  z-index: 3;
 `;
 
 const HeadWrap = styled.div`

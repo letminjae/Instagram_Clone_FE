@@ -1,10 +1,11 @@
 import React from "react";
+import Header from "../components/Header";
 
 const Direct = () => {
     
     return(
         <React.Fragment>
-            디엠
+            <Header />
         </React.Fragment>
     )
 }

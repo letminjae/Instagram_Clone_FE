@@ -46,7 +46,7 @@ export default function Story() {
 }
 
 const Wrap = styled.div`
-  width: 616px;
+  width: 636px;
   height: 88px;
   padding: 16px 0;
   margin-bottom: 24px;
