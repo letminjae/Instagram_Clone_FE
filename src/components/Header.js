@@ -92,7 +92,7 @@ const Header = () => {
           />
           {/* 프로필 버튼 */}
           {profileButton ? (
-            <Grid position="relative">
+            <div position="relative">
               <img
                 src="https://img1.daumcdn.net/thumb/R300x0/?fname=https://k.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg"
                 alt="profile"
@@ -138,9 +138,9 @@ const Header = () => {
                   <SideBarText style={{ margin: "0" }}>로그아웃</SideBarText>
                 </SideGoProfile>
               </SideBarModal>
-            </Grid>
+            </div>
           ) : (
-            <Grid position="relative">
+            <div position="relative">
               <img
                 src="https://img1.daumcdn.net/thumb/R300x0/?fname=https://k.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg"
                 alt="profile"
@@ -152,7 +152,7 @@ const Header = () => {
                 }}
                 onClick={() => setProfileButton(true)}
               />
-            </Grid>
+            </div>
           )}
         </LinkPages>
       </HeadWrap>
@@ -317,7 +317,7 @@ const HeadWrap = styled.div`
 
 const LinkPages = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   position: absolute;
   right: 0;
 `;

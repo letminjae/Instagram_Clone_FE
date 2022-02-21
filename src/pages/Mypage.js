@@ -58,7 +58,7 @@ const Mypage = (props) => {
         <Grid
           Width="935px"
           height="100"
-          wraper="wrap"
+          wrap="wrap"
           bg="#bbb"
           display="flex"
           justifyContent="flex-start"

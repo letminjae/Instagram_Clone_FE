@@ -30,7 +30,7 @@ const loginDB = (email, pwd) => {
       .then((res) => {
         setCookie("token", res.data.token, 5);
         dispatch(setUser({ email: email }));
-        history.push("/main");
+        history.push("/");
       })
       .catch((error) => console.log(error));
   };
@@ -40,7 +40,6 @@ const loginCheckDB = (user) => {
   return function (dispatch, getState, { history }) {
     console.log(history);
     dispatch(setUser(user));
-    // const userId = localStorage.getItem("authorization");
     // const tokenCheck = document.cookie;
     // if (tokenCheck) {
     //   dispatch(setUser({ id: userId }));
