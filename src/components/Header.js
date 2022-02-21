@@ -241,8 +241,8 @@ const Header = () => {
                                                 src={file}
                                                 alt="userUploadImg"
                                                 style={{
-                                                    maxWidth: "540px",
-                                                    maxHeight: "580px",
+                                                    maxWidth: "480px",
+                                                    maxHeight: "480px",
                                                     display: "block",
                                                 }}
                                             />
@@ -445,6 +445,7 @@ const MainRight = styled.div`
 
 const RightTop = styled.div`
   border-bottom: 1px solid #ccc;
+  
 `;
 
 const UserInfo = styled.div`
@@ -456,7 +457,7 @@ const UserInfo = styled.div`
 const Textarea = styled.textarea`
 resize: none;
 display: block;
-width: 100%;
+width: 300px;
 height: 168px;
 border: none;
 padding: 10px;

@@ -10,8 +10,6 @@ import Mypage from '../pages/Mypage';
 import Direct from '../pages/Direct';
 import Main from '../pages/Main'
 
-import Header from '../components/Header'
-
 function App() {
   return (
     <React.Fragment>
