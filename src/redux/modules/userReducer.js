@@ -8,13 +8,13 @@ import { setAuthorizationToken } from "../../shared/setAuthorizationToken";
 const LOG_OUT = "LOG_OUT";
 const GET_USER = "GET_USER";
 const SET_USER = "SET_USER";
-const USERINFO = "USERINFO";
+// const USERINFO = "USERINFO";
 
 // action creators
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 const getUser = createAction(GET_USER, (user) => ({ user }));
 const setUser = createAction(SET_USER, (user) => ({ user }));
-const userInfo = createAction(SET_USER, (user) => ({ user }));
+// const userInfo = createAction(SET_USER, (user) => ({ user }));
 
 // initialState
 const initialState = {
@@ -30,13 +30,9 @@ const loginDB = (email, pwd) => {
       .then((res) => {
         setCookie("token", res.data.token, 5);
         dispatch(setUser({ email: email }));
-        history.push("/");
+        history.push("/main");
       })
       .catch((error) => console.log(error));
-
-    // dispatch(userInfo(res.headers["authorization"], id, pwd));
-
-    // .catch((error) => alert("회원정보가 일치하지 않습니다."));
   };
 };
 
@@ -44,7 +40,6 @@ const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
     const tokenCheck = document.cookie;
     const token = tokenCheck.split("=")[1];
-    // const token = tokenDummy.split("=")[1].toString();
     if (token) {
       apis
         .userInfo(token)
@@ -116,7 +111,7 @@ export default handleActions(
       produce(state, (draft) => {
         // deleteCookie("is_login");
         draft.userinfo = null;
-        draft.token = null;
+        draft.is_login = false;
       }),
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
     [USERINFO]: (state, action) =>
