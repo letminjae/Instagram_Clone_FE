@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import React from "react";
+import styled from "styled-components";
 
 const Image = (props) => {
   const {
@@ -20,18 +20,18 @@ const Image = (props) => {
     image_auto,
     display,
     float,
-    radius,
-    className,
     shape,
+    className,
+    radius,
   } = props;
 
   const styles = {
     imageType,
-    shape,
     src,
     size,
-    height,
+    bgsize,
     width,
+    height,
     margin,
     padding,
     cursor,
@@ -42,15 +42,34 @@ const Image = (props) => {
     image_auto,
     display,
     float,
-    radius,
+    shape,
     className,
-    bgsize,
+    _onClick,
+    radius,
   };
 
+  // 로고 이미지 쓸때
   if (imageType === "logo") {
     return <ImageLogo {...styles} onClick={_onClick}></ImageLogo>;
   }
 
+  // 원형 이미지 : 프로필 사진, 스토리 사진 쓸때
+  if (imageType === "circle") {
+    return <ImageCircle {...styles}></ImageCircle>;
+  }
+
+  // 게시물 이미지 쓸때
+  if (imageType === "rectangle") {
+    return (
+      <React.Fragment>
+        <OutBox>
+          <InBox {...styles} />
+        </OutBox>
+      </React.Fragment>
+    );
+  }
+
+  // 게시물 작성시 미리보기 프리뷰
   if (shape === "myIcon") {
     return <MyProfile {...styles} onClick={_onClick} />;
   }
@@ -62,7 +81,6 @@ const Image = (props) => {
       </AspectOutter>
     );
   }
-
   if (shape === "imgBtn") {
     return (
       <AspectOutter>
@@ -71,7 +89,6 @@ const Image = (props) => {
     );
   }
 
-  // 게시물 작성시 미리보기 프리뷰
   if (imageType === "preview") {
     return <ImageRectangle {...styles}></ImageRectangle>;
   }
@@ -92,14 +109,16 @@ const Image = (props) => {
   }
 
   return (
-    <React.Fragment>
-      <MyProfile {...styles} onClick={_onClick} />
-    </React.Fragment>
+    <>
+      <React.Fragment>
+        <MyProfile {...styles} onClick={_onClick} />
+      </React.Fragment>
+    </>
   );
 };
 
 Image.defaultProps = {
-  imageType: "logo",
+  imageType: "myIcon",
   src: "https://www.snsboom.co.kr/common/img/default_profile.png",
   size: 40,
   bgsize: "cover",
@@ -110,28 +129,6 @@ Image.defaultProps = {
   image_auto: false,
   float: null,
 };
-
-//사각형 이미지일때 스타일
-const ImageRectangle = styled.div`
-  max-width: ${(props) => props.maxWidth};
-  max-height: ${(props) => props.maxHeight};
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  margin: ${(props) => props.margin};
-  padding: ${(props) => props.padding};
-  background-size: ${(props) => props.bgsize};
-  background-image: url("${(props) => props.src}");
-`;
-//로고 이미지 일때 스타일
-const ImageLogo = styled.div`
-  cursor: ${(props) => props.cursor};
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  margin: ${(props) => props.margin};
-  padding: ${(props) => props.padding};
-  background-size: ${(props) => props.bgsize};
-  background-image: url("${(props) => props.src}");
-`;
 
 const AspectOutter = styled.div`
   width: ${(props) => props.width};
@@ -147,7 +144,6 @@ const AspectInner = styled.div`
   ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
   background-size: cover;
 `;
-
 const MyProfile = styled.div`
   width: 150px;
   height: 150px;
@@ -161,17 +157,58 @@ const MyProfile = styled.div`
   }
 `;
 
-const ImgBtn = styled.div`
-  position: relative;
-  overflow: hidden;
+//사각형 이미지일때 스타일
+const ImageRectangle = styled.div`
+  max-width: ${(props) => props.maxWidth};
+  max-height: ${(props) => props.maxHeight};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   margin: ${(props) => props.margin};
-  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
+  padding: ${(props) => props.padding};
+  background-size: ${(props) => props.bgsize};
+  background-image: url("${(props) => props.src}");
+`;
+
+//로고 이미지 일때 스타일
+const ImageLogo = styled.div`
+  cursor: ${(props) => props.cursor};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  margin: ${(props) => props.margin};
+  padding: ${(props) => props.padding};
+  background-size: ${(props) => props.bgsize};
+  background-image: url("${(props) => props.src}");
+`;
+
+//반응형
+const OutBox = styled.div`
+  width: 100%;
+`;
+
+//비율 맞추기
+const InBox = styled.div`
+  position: relative;
+  padding-top: 100%;
+  // 요소내의 컨텐츠가 너무 커서 요소내에 모두 보여주기 힘들때 hidden 하면 넘치는 부분은 잘림
+  overflow: hidden;
+  background-image: url("${(props) => props.src}");
+  background-size: ${(props) => props.bgsize};
+`;
+
+// 원형 이미지일때 스타일
+// --size 변수 쓸때 var(--size) 고고
+const ImageCircle = styled.div`
+  --size: ${(props) => props.size}px;
+  // width: 36px;
+  // height: 36px;
+  // border-radius: 36px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: var(--size);
+  min-width: 36px;
+  background-image: url("${(props) => props.src}");
   background-size: cover;
-  &:hover {
-    opacity: 0.9;
-  }
+  margin: ${(props) => props.margin};
 `;
 
 // 마이페이지 프로필 커스텀
@@ -204,6 +241,21 @@ const MyImageRT = styled.div`
   padding: ${(props) => props.padding};
   background-size: ${(props) => props.bgsize};
   background-image: url("${(props) => props.src}");
+`;
+
+//test
+
+const ImgBtn = styled.div`
+  position: relative;
+  overflow: hidden;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  margin: ${(props) => props.margin};
+  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
+  background-size: cover;
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 export default Image;

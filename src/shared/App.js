@@ -8,7 +8,7 @@ import Direct from "../pages/Direct";
 import Mypage from "../pages/Mypage";
 import Permit from "./Permit";
 import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as loginActions } from "./redux/modules/loginReducer";
+import { actionCreators as loginActions } from "../redux/modules/userReducer";
 import { history } from "../redux/configureStore";
 import { ConnectedRouter } from "connected-react-router";
 import { Route } from "react-router-dom";
