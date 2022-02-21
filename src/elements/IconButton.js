@@ -1,27 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  AiOutlineHeart,
-  AiOutlineCheck,
-} from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineCheck } from "react-icons/ai";
 import { BiArrowBack, BiMessageRounded } from "react-icons/bi";
 import { FaRegComment, FaRegCompass } from "react-icons/fa";
 import { FcLike } from "react-icons/fc";
 import { MdOutlineAddBox } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 import { HiHome } from "react-icons/hi";
+import { AiFillFacebook } from "react-icons/ai";
+import { AiOutlineTable } from "react-icons/ai";
 
 const IconButton = (props) => {
-
   const {
     _onClick,
+    Table,
+    facebookLogo,
     likeIcon,
-    unLikeIcon, 
-    commentIcon, 
+    unLikeIcon,
+    commentIcon,
     plusIcon,
-    checkIcon, 
+    checkIcon,
     leftArrowIcon,
-    moreView, 
+    moreView,
     compass,
     message,
     home,
@@ -30,6 +30,7 @@ const IconButton = (props) => {
     margin,
     padding,
     cursor,
+    color,
   } = props;
 
   const styles = {
@@ -38,10 +39,29 @@ const IconButton = (props) => {
     height: height,
     margin: margin,
     cursor: cursor,
+    color: color,
   };
 
-
   //아이콘 작동
+  if (Table) {
+    return (
+      <React.Fragment>
+        <Icon {...styles}>
+          <AiOutlineTable size={size} onClick={_onClick}></AiOutlineTable>
+        </Icon>
+      </React.Fragment>
+    );
+  }
+
+  if (facebookLogo) {
+    return (
+      <React.Fragment>
+        <Icon {...styles}>
+          <AiFillFacebook size={size} onClick={_onClick}></AiFillFacebook>
+        </Icon>
+      </React.Fragment>
+    );
+  }
   if (likeIcon) {
     return (
       <React.Fragment>
@@ -152,6 +172,7 @@ IconButton.defaultProps = {
   moreView: false,
   width: "100%",
   cursor: "pointer",
+  color: false,
 };
 
 const Icon = styled.div`
@@ -161,6 +182,7 @@ const Icon = styled.div`
   height: ${(props) => props.height};
   margin: ${(props) => props.margin};
   padding: ${(props) => props.padding};
+  ${(props) => (props.color ? `color:${props.color};` : "")}
 `;
 
 export default IconButton;

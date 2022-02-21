@@ -7,7 +7,7 @@ import User from "./modules/userReducer";
 import Post from "./modules/postReducer";
 import Comment from "./modules/commentReducer";
 import Image from "./modules/imageReducer";
-import DM from "./modules/dmReducer"
+import DM from "./modules/dmReducer";
 
 export const history = createBrowserHistory();
 
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   post: Post,
   comment: Comment,
   image: Image,
-  dm : DM,
+  dm: DM,
   router: connectRouter(history),
 });
 
@@ -24,10 +24,9 @@ const middlewares = [thunk.withExtraArgument({ history: history })];
 
 const env = process.env.NODE_ENV;
 
-
 if (env === "development") {
-  const { logger } = require("redux-logger")
-  middlewares.push(logger); 
+  const { logger } = require("redux-logger");
+  middlewares.push(logger);
 }
 
 const composeEnhancers =

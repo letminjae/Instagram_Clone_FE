@@ -3,6 +3,11 @@ import styled from "styled-components";
 
 const Grid = (props) => {
   const {
+    wraper,
+    display,
+    flexDirection,
+    justifyContent,
+    alignItems,
     children,
     is_fix,
     border,
@@ -35,6 +40,11 @@ const Grid = (props) => {
   } = props;
 
   const styles = {
+    wraper: wraper,
+    display: display,
+    flexDirection: flexDirection,
+    justifyContent: justifyContent,
+    alignItems: alignItems,
     is_flex: is_flex,
     is_fix: is_fix,
     width: width,
@@ -102,9 +112,19 @@ Grid.defaultProps = {
   overflowy: false,
   overflowx: false,
   media: "false",
+  alignItems: null,
+  display: null,
+  flexDirection: null,
+  justifyContent: null,
+  wraper: false,
 };
 
 const GridBox = styled.div`
+  ${(props) => (props.wraper ? `flex-wrap: ${props.wraper};` : "")}
+  display: ${(props) => props.display};
+  justify-content: ${(props) => props.justifyContent};
+  flex-direction: ${(props) => props.flexDirection};
+  align-items: ${(props) => props.alignItems};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   top: ${(props) => props.top};
@@ -122,13 +142,16 @@ ${(props) => (props.bg ? `background-color:${props.bg};` : "")}
     props.is_flex
       ? `display: flex; align-tiems: center; justify-content: space-between;`
       : ""} */
-${(props) => (props.is_flex ? `display: flex; align-items: center;` : "")}
+${(props) =>
+    props.is_flex
+      ? `display: flex; align-items: center; justify-content: center;`
+      : ""}
 ${(props) => (props.border ? `border:${props.border};` : "border: none;")}
 ${(props) => (props.is_fix ? ` position: fixed;   z-index: 1;` : "")}
 ${(props) => (props.position ? `position: ${props.position};` : "")}
 ${(props) =>
     props.borderBottom ? `border-bottom : ${props.borderBottom};` : ""}
-  ${(props) => (props.borderBottom ? `border-top : ${props.borderTop};` : "")}
+  ${(props) => (props.borderTop ? `border-top : ${props.borderTop};` : "")}
   ${(props) => (props.berderLeft ? `border-left : ${props.berderLeft};` : "")}
 ${(props) =>
     props.hide ? `display:none` : "none"}; // 가입양식 유효성 검사시 안내문구

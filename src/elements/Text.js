@@ -22,6 +22,7 @@ const Text = (props) => {
     is_flex,
     zindex,
     justifycontent,
+    fontFamily,
   } = props;
   const styles = {
     size,
@@ -41,6 +42,7 @@ const Text = (props) => {
     is_flex,
     zindex,
     justifycontent,
+    fontFamily,
   };
   return (
     <React.Fragment>
@@ -70,8 +72,10 @@ Text.defaultProps = {
   minWidth: null,
   is_flex: false,
   zindex: false,
+  fontFamily: null,
 };
 const P = styled.p`
+  ${(props) => `font-family : ${props.fontFamily};`};
   /* z-index: 1; */
   z-index: ${(props) => (props.zindex ? `1;` : null)};
   height: ${(props) => props.height};
