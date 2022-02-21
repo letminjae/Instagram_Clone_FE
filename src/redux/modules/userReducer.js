@@ -36,24 +36,10 @@ const loginDB = (email, pwd) => {
   };
 };
 
-const loginCheckDB = () => {
+const loginCheckDB = (user) => {
   return function (dispatch, getState, { history }) {
-    const tokenCheck = document.cookie;
-    const token = tokenCheck.split("=")[1];
-    if (token) {
-      apis
-        .userInfo(token)
-        .then((res) => {
-          dispatch(
-            setUser({
-              email: res.data.username,
-              nickname: res.data.nickname,
-              token: token,
-            })
-          );
-        })
-        .catch((error) => console.log(error));
-    }
+    console.log(history);
+    dispatch(setUser(user));
     // const userId = localStorage.getItem("authorization");
     // const tokenCheck = document.cookie;
     // if (tokenCheck) {
@@ -114,11 +100,11 @@ export default handleActions(
         draft.is_login = false;
       }),
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
-    [USERINFO]: (state, action) =>
-      produce(state, (draft) => {
-        draft.user = action.payload.user;
-        draft.username = action.payload.username;
-      }),
+    // [USERINFO]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     draft.user = action.payload.user;
+    //     draft.username = action.payload.username;
+    //   }),
   },
   initialState
 );

@@ -1,5 +1,5 @@
-import React from "react";
 import styled from "styled-components";
+import React from "react";
 
 const Image = (props) => {
   const {
@@ -20,15 +20,18 @@ const Image = (props) => {
     image_auto,
     display,
     float,
+    radius,
+    className,
+    shape,
   } = props;
 
   const styles = {
     imageType,
+    shape,
     src,
     size,
-    bgsize,
-    width,
     height,
+    width,
     margin,
     padding,
     cursor,
@@ -39,26 +42,32 @@ const Image = (props) => {
     image_auto,
     display,
     float,
+    radius,
+    className,
+    bgsize,
   };
 
-  // 로고 이미지 쓸때
   if (imageType === "logo") {
     return <ImageLogo {...styles} onClick={_onClick}></ImageLogo>;
   }
 
-  // 원형 이미지 : 프로필 사진, 스토리 사진 쓸때
-  if (imageType === "circle") {
-    return <ImageCircle {...styles}></ImageCircle>;
+  if (shape === "myIcon") {
+    return <MyProfile {...styles} onClick={_onClick} />;
   }
 
-  // 게시물 이미지 쓸때
-  if (imageType === "rectangle") {
+  if (shape === "rectangle") {
     return (
-      <React.Fragment>
-        <OutBox>
-          <InBox {...styles} />
-        </OutBox>
-      </React.Fragment>
+      <AspectOutter>
+        <AspectInner {...styles} />
+      </AspectOutter>
+    );
+  }
+
+  if (shape === "imgBtn") {
+    return (
+      <AspectOutter>
+        <ImgBtn {...styles} onClick={_onClick} />
+      </AspectOutter>
     );
   }
 
@@ -83,11 +92,9 @@ const Image = (props) => {
   }
 
   return (
-    <>
-      <OutBox>
-        <InBox {...styles} />
-      </OutBox>
-    </>
+    <React.Fragment>
+      <MyProfile {...styles} onClick={_onClick} />
+    </React.Fragment>
   );
 };
 
@@ -115,7 +122,6 @@ const ImageRectangle = styled.div`
   background-size: ${(props) => props.bgsize};
   background-image: url("${(props) => props.src}");
 `;
-
 //로고 이미지 일때 스타일
 const ImageLogo = styled.div`
   cursor: ${(props) => props.cursor};
@@ -127,35 +133,45 @@ const ImageLogo = styled.div`
   background-image: url("${(props) => props.src}");
 `;
 
-//반응형
-const OutBox = styled.div`
-  width: 100%;
+const AspectOutter = styled.div`
+  width: ${(props) => props.width};
+  min-width: 250px;
 `;
 
-//비율 맞추기
-const InBox = styled.div`
+const AspectInner = styled.div`
   position: relative;
-  padding-top: 100%;
-  // 요소내의 컨텐츠가 너무 커서 요소내에 모두 보여주기 힘들때 hidden 하면 넘치는 부분은 잘림
   overflow: hidden;
-  background-image: url("${(props) => props.src}");
-  background-size: ${(props) => props.bgsize};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  margin: ${(props) => props.margin};
+  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
+  background-size: cover;
 `;
 
-// 원형 이미지일때 스타일
-// --size 변수 쓸때 var(--size) 고고
-const ImageCircle = styled.div`
-  --size: ${(props) => props.size}px;
-  // width: 36px;
-  // height: 36px;
-  // border-radius: 36px;
-  width: var(--size);
-  height: var(--size);
-  border-radius: var(--size);
-  min-width: 36px;
-  background-image: url("${(props) => props.src}");
+const MyProfile = styled.div`
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
   background-size: cover;
+  background-position: center;
+  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
+`;
+
+const ImgBtn = styled.div`
+  position: relative;
+  overflow: hidden;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   margin: ${(props) => props.margin};
+  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
+  background-size: cover;
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 // 마이페이지 프로필 커스텀
@@ -188,21 +204,6 @@ const MyImageRT = styled.div`
   padding: ${(props) => props.padding};
   background-size: ${(props) => props.bgsize};
   background-image: url("${(props) => props.src}");
-`;
-
-//test
-
-const ImgBtn = styled.div`
-  position: relative;
-  overflow: hidden;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  margin: ${(props) => props.margin};
-  ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
-  background-size: cover;
-  &:hover {
-    opacity: 0.9;
-  }
 `;
 
 export default Image;

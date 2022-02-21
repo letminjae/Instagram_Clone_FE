@@ -1,6 +1,6 @@
 import React from "react";
-import styled from "styled-components";
-import { Grid, Text, Button, IconButton, Input, Image } from "../elements";
+
+import { Grid, Text, Button, IconButton, Image } from "../elements";
 
 const Mypage = (props) => {
   return (
