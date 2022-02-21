@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Grid from '../elements/Grid'
 
-
 import { history } from "../redux/configureStore";
 import { Link } from "react-router-dom";
 
@@ -17,8 +16,7 @@ import { RiBookmarkLine } from "react-icons/ri";
 import { AiOutlinePicture, AiOutlineClose } from "react-icons/ai";
 import { BsPlayBtn, BsPlusSquare, BsPlusSquareFill } from "react-icons/bs";
 import { CgSmile, CgProfile } from "react-icons/cg";
-import { TiArrowMaximiseOutline, TiArrowRepeat } from "react-icons/ti";
-import { stepContentClasses } from "@mui/material";
+import { TiArrowRepeat } from "react-icons/ti";
 
 import Modal from '../components/Modal'
 
@@ -37,11 +35,10 @@ const Header = () => {
 
     const addUploadURL = (e) => {
         setUploadFiles(e.target.files);
-        console.log(uploadFiles)
         const ImgUrlList = [...uploadURL]
+        console.log(ImgUrlList)
         for (let i = 0; i < e.target.files.length; i++) {
             const ImgUrl = URL.createObjectURL(e.target.files[i])
-            console.log(ImgUrl)
 
             ImgUrlList.push(ImgUrl);
         }
@@ -49,19 +46,9 @@ const Header = () => {
     }
 
     const addPost = () => {
-        // let formData = new formdata();
-        // formData.append('imgUrl', uploadFiles);
-        // formData.append('content', content);
-
-        // return axios.post('http://13.125.107.22/posts/', formData)
-        //             .then((response) => {
-        //                 const data = response.data;
-        //                 setPostWrite(false);
-        //                 setUploadURL([]);
-        //                 setContent("");
-        //                 dispatch(addPostDB(data));
-        //             });
-    
+        return (
+            null
+        )
     }
 
     const closeUpload = (e) => {
@@ -75,14 +62,12 @@ const Header = () => {
                 {/* 로고 */}
                 <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
                     alt="Instagram Logo"
-                    onClick={() => {history.replace('/')}}
-                    style={{cursor:"pointer"}}
                 />
                 <LinkPages>
                     {/* 홈화면 가는 버튼 */}
                     <Link to="/">
                         <AiFillHome
-                            size="28"
+                            size="28px"
                             style={{ margin: "0 5px", cursor: "pointer", color: "black" }}
                         />
                     </Link>
@@ -98,12 +83,12 @@ const Header = () => {
                         onClick={() => { setPostWrite(true) }}
                         size="28"
                         style={{ margin: "0 10px", cursor: "pointer" }}
-                    />
+                        />
                     {/* 탐험 버튼 */}
                     <AiOutlineCompass
                         size="28"
                         style={{ margin: "0 10px", cursor: "pointer" }}
-                    />
+                        />
                     {/* 알림 버튼 */}
                     <AiOutlineHeart
                         size="28"
@@ -111,7 +96,7 @@ const Header = () => {
                     />
                     {/* 프로필 버튼 */}
                     {profileButton ? (
-                        <Grid position="relative">
+                        <div>
                             <img
                                 src="https://img1.daumcdn.net/thumb/R300x0/?fname=https://k.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg"
                                 alt="profile"
@@ -157,9 +142,9 @@ const Header = () => {
                                     <SideBarText style={{ margin: "0" }}>로그아웃</SideBarText>
                                 </SideGoProfile>
                             </SideBarModal>
-                        </Grid>
+                        </div>
                     ) : (
-                        <Grid position="relative">
+                        <div position="relative">
                             <img
                                 src="https://img1.daumcdn.net/thumb/R300x0/?fname=https://k.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg"
                                 alt="profile"
@@ -171,15 +156,15 @@ const Header = () => {
                                 }}
                                 onClick={() => setProfileButton(true)}
                             />
-                        </Grid>
+                        </div>
                     )}
 
                 </LinkPages>
             </HeadWrap>
 
             {/* 게시물 작성 =>
-            1. uploadURL의 개수가 0이면 사진등록 모달 보이게하기
-            2. uploadURL의 개수가 0이 아니면 콘텐츠 등록 모달 보이게하기
+            1. uploadURL의 개수가 0이면 사진등록 모달 보이게하기!
+            2. uploadURL의 개수가 0이 아니면 콘텐츠 등록 모달 보이게하기!
              */}
 
             {/* 1번 사진등록 모달 */}
