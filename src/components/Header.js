@@ -17,7 +17,7 @@ import { RiBookmarkLine } from "react-icons/ri";
 import { AiOutlinePicture, AiOutlineClose } from "react-icons/ai";
 import { BsPlayBtn, BsPlusSquare, BsPlusSquareFill } from "react-icons/bs";
 import { CgSmile, CgProfile } from "react-icons/cg";
-import { TiArrowRepeat } from "react-icons/ti";
+import { TiArrowMaximiseOutline, TiArrowRepeat } from "react-icons/ti";
 import { stepContentClasses } from "@mui/material";
 
 import Modal from '../components/Modal'
@@ -37,10 +37,11 @@ const Header = () => {
 
     const addUploadURL = (e) => {
         setUploadFiles(e.target.files);
+        console.log(uploadFiles)
         const ImgUrlList = [...uploadURL]
-        console.log(ImgUrlList)
         for (let i = 0; i < e.target.files.length; i++) {
             const ImgUrl = URL.createObjectURL(e.target.files[i])
+            console.log(ImgUrl)
 
             ImgUrlList.push(ImgUrl);
         }
@@ -48,9 +49,19 @@ const Header = () => {
     }
 
     const addPost = () => {
-        return (
-            null
-        )
+        // let formData = new formdata();
+        // formData.append('imgUrl', uploadFiles);
+        // formData.append('content', content);
+
+        // return axios.post('http://13.125.107.22/posts/', formData)
+        //             .then((response) => {
+        //                 const data = response.data;
+        //                 setPostWrite(false);
+        //                 setUploadURL([]);
+        //                 setContent("");
+        //                 dispatch(addPostDB(data));
+        //             });
+    
     }
 
     const closeUpload = (e) => {
@@ -64,6 +75,8 @@ const Header = () => {
                 {/* 로고 */}
                 <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
                     alt="Instagram Logo"
+                    onClick={() => {history.replace('/')}}
+                    style={{cursor:"pointer"}}
                 />
                 <LinkPages>
                     {/* 홈화면 가는 버튼 */}

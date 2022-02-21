@@ -1,8 +1,6 @@
 import { handleActions, createAction } from 'redux-actions';
 import produce from 'immer'
 
-
-
 //액션
 const SET_POST = 'GET_POST';
 const ADD_POST = 'ADD_POST';
