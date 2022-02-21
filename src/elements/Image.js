@@ -76,7 +76,7 @@ const AspectInner = styled.div`
 const MyProfile = styled.div`
   width: 150px;
   height: 150px;
-  border-radius: 50%;
+  border-radius: 100%;
   background-size: cover;
   background-position: center;
   ${(props) => (props.src ? `background-image: url(${props.src});` : "")}
