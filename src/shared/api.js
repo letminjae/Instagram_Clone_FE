@@ -67,8 +67,12 @@ export const apis = {
   chatRoomInfo: (roomId) => api.get(`/chat/room/${roomId}/carpool`),
 
   chatRoomDelete: (roomId) => api.delete(`/chat/room/${roomId}`),
+
+  //유저 정보 불러오기
+  getUser : () => api.get("api/users"),
+
 };
 
 export const apisMultipart = {
-  addPost: (formdata) => apiMultipart.post("/api/post", { formdata }),
+  addPost: (formdata) => apiMultipart.post("/api/post", formdata),
 };

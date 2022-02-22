@@ -19,7 +19,7 @@ import { apis } from "../shared/api";
 export default function Post(props) {
     //props 값
     const post = props;
-    const postId = post.postId;
+    const postId = post.postId
     const imageUrl = post.imageUrl
     const liked = post.liked;
     const createdAt = post.createdAt.split("T")[1].split(":")[0];
@@ -45,13 +45,14 @@ export default function Post(props) {
 
     //포스트 삭제
     const deletePost = () => {
-        alert("정말 삭제하시겠습니까?")
-        apis.deletePost()
-        .then((response) => {
-          console.log("삭제 완료")
-          dispatch(delPostDB(postId));
-          setMoreInfo(false);
-        })
+      const ok = window.confirm("정말로 삭제하시겠어요?")
+
+      if (ok) {
+          dispatch(delPostDB(postId))
+          history.replace('/')
+      } else {
+          return;
+      }
     }
 
     //좋아요 추가

@@ -57,6 +57,10 @@ const Direct = () => {
     }
   };
 
+  const getUser = apis.getUser()
+  console.log(getUser)
+
+
   //메세지 보내면 스크롤 자동내림
   // const scrollMoveBottom = () => {
   //   scrollRef.current.scrollIntoView({
@@ -218,21 +222,23 @@ const Direct = () => {
                                             <>
                                                 <ContentsContainer key={index}>
                                                     <MessageList>
-                                                        {message.user_account === user_account ? (
-                                                            <PostUserContainer>
+                                                        {/* {message.user_account === user_account ? ( */}
+                                                            {/* // <PostUserContainer> */}
                                                                 {/* <p>{TimeFormat(created_at)}</p> */}
-                                                                <PostUser need={message.length > 20}>
-                                                                    <Span>{message}</Span>
-                                                                </PostUser>
-                                                            </PostUserContainer>
-                                                        ) : (
+                                                                {/* <PostUser need={message.length > 20}> */}
+                                                                    {/* <Span>{message}</Span> */}
+                                                                {/* </PostUser> */}
+                                                            {/* </PostUserContainer> */}
+                                                        // ) : 
+                                                        (
                                                             <SendUserContainer>
                                                                 <SendDMUser need={message.length > 20}>
                                                                     <Span>{message}</Span>
                                                                 </SendDMUser>
                                                                 {/* <p>{TimeFormat(created_At)}</p> */}
                                                             </SendUserContainer>
-                                                        )}
+                                                        )
+                                                        // }
                                                     </MessageList>
                                                 </ContentsContainer>
                                             </>

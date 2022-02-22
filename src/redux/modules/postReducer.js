@@ -41,6 +41,7 @@ export const addPostDB = (data) => {
     return function (dispatch, getState, { history }) {
         dispatch(addPost(data));
         dispatch(setPostDB());
+        history.replace('/')
     }
 }
 
@@ -52,6 +53,18 @@ export const delPostDB = (postId) => {
             })
     }
 }
+
+// expor const delPostAction = (meetingId) => {
+//     return function (dispatch, getState, { history }) {
+//       apis.delPost(meetingId)
+//         .then((res) => {
+//           console.log(res)
+//           dispatch(delPost(meetingId))
+//           document.location.reload('/')
+//         })
+//         .catch((err) => console.log(err))
+//     }
+//   }
 
 
 

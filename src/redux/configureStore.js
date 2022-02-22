@@ -8,6 +8,7 @@ import Post from "./modules/postReducer";
 import Comment from "./modules/commentReducer";
 import DM from "./modules/dmReducer"
 import Like from "./modules/likeReducer";
+import Image from "./modules/imageReducer"
 
 export const history = createBrowserHistory();
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   comment: Comment,
   like: Like,
   dm: DM,
+  image: Image,
   router: connectRouter(history),
 });
 
