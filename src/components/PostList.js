@@ -16,7 +16,7 @@ const PostList = () => {
             }).catch(function (error){
                 console.log(error)
             })
-    }, [])
+        }, [])
 
 
     return(
