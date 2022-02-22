@@ -55,6 +55,19 @@ export const apis = {
   //좋아요 바꾸기
   changeLike: (postId) => api.post(`api/like/${postId}`, { postId }),
   // deleteLike: (postId) => api.delete("api/like", {postId}),
+
+  //DM 채팅
+  chatRoom: (postId) => api.post(`/chat/room/${postId}`, {}),
+
+  chatRoomList: () => api.get(`/chat/rooms`, {}),
+
+  chatMSG: (roomId) => api.get(`/chat/message/${roomId}`),
+
+  chatShowProfile: (roomId) => api.get(`/user/introduction/${roomId}`),
+
+  chatRoomInfo: (roomId) => api.get(`/chat/room/${roomId}/carpool`),
+
+  chatRoomDelete: (roomId) => api.delete(`/chat/room/${roomId}`),
 };
 
 export const apisMultipart = {
