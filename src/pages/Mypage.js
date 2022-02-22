@@ -1,8 +1,14 @@
 import React from "react";
-
+import { actionCreators as loginActions } from "../redux/modules/userReducer";
 import { Grid, Text, Button, IconButton, Image } from "../elements";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Mypage = (props) => {
+  // const dispatch = useDispatch();
+
+  // const userinfo = useSelector((state) => state.userReducer.data);
+  // console.log(userinfo);
   return (
     <React.Fragment>
       <Grid
@@ -58,7 +64,7 @@ const Mypage = (props) => {
         <Grid
           Width="935px"
           height="100"
-          wraper="wrap"
+          wrap="wrap"
           bg="#bbb"
           display="flex"
           justifyContent="flex-start"

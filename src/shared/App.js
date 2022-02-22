@@ -15,15 +15,13 @@ import { Route } from "react-router-dom";
 import { setPostDB } from "../redux/modules/postReducer";
 
 function App() {
-
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (document.cookie){
-    dispatch(loginActions.loginCheckDB());
+    if (document.cookie) {
+      dispatch(loginActions.loginCheckDB());
     }
   }, []);
-
 
   return (
     <React.Fragment>

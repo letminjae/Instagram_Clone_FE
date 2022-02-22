@@ -3,13 +3,13 @@ import styled from "styled-components";
 
 const Grid = (props) => {
   const {
-    wraper,
+    overflow,
+    radius,
     display,
     flexDirection,
     justifyContent,
     alignItems,
     children,
-    is_fix,
     border,
     is_flex,
     width,
@@ -20,7 +20,6 @@ const Grid = (props) => {
     position,
     height,
     cursor,
-    hide,
     minWidth,
     maxWidth,
     minHeight,
@@ -28,26 +27,22 @@ const Grid = (props) => {
     left,
     right,
     bottom,
-    zindex, //z-index 값을 가진 요소가 작은 값의 요소 위를 덮음
     borderRadius,
     borderRight,
     berderLeft,
     borderBottom,
     borderTop,
-    overflowy, // 위아래가 넘칠때 어떻게 보여줄지
-    overflowx, // 옆이 넘칠때 어떻게 보여줄지
-    media,
     wrap,
+    className,
   } = props;
 
   const styles = {
-    wraper: wraper,
+    overflow: overflow,
     display: display,
     flexDirection: flexDirection,
     justifyContent: justifyContent,
     alignItems: alignItems,
     is_flex: is_flex,
-    is_fix: is_fix,
     width: width,
     height: height,
     margin: margin,
@@ -56,7 +51,6 @@ const Grid = (props) => {
     border: border,
     position: position,
     cursor: cursor,
-    hide: hide,
     borderTop: borderTop,
     borderBottom: borderBottom,
     berderLeft: berderLeft,
@@ -69,11 +63,9 @@ const Grid = (props) => {
     left: left,
     right: right,
     bottom: bottom,
-    zindex: zindex,
-    media: media,
-    overflowy: overflowy,
-    overflowx: overflowx,
-    // wrap: wrap,
+    radius: radius,
+    wrap: wrap,
+    className: className,
   };
 
   return (
@@ -88,7 +80,6 @@ const Grid = (props) => {
 Grid.defaultProps = {
   children: null,
   is_flex: false,
-  is_fix: false,
   width: "100%",
   height: "100%",
   margin: false,
@@ -110,20 +101,15 @@ Grid.defaultProps = {
   left: null,
   right: null,
   bottom: null,
-  zindex: false,
-  overflowy: false,
-  overflowx: false,
-  media: "false",
   alignItems: null,
   display: null,
   flexDirection: null,
   justifyContent: null,
-  // wraper: false,
 };
 
 const GridBox = styled.div`
+  ${(props) => (props.className ? `className: ${props.className};` : "")}
   ${(props) => (props.wrap ? `flex-wrap: ${props.wrap};` : "")}
-  ${(props) => (props.wraper ? `flex-wrap: ${props.wraper};` : "")}
   display: ${(props) => props.display};
   justify-content: ${(props) => props.justifyContent};
   flex-direction: ${(props) => props.flexDirection};
@@ -136,39 +122,25 @@ const GridBox = styled.div`
   cursor: ${(props) => props.cursor};
   border-top: ${(props) => props.borderTop};
   border-right: ${(props) => props.borderRight};
-  ${(props) => (props.overflowy ? ` overflow-y:${props.overflowy};` : "")}
-  ${(props) => (props.overflowx ? ` overflow-x:${props.overflowx};` : "")}
   ${(props) => (props.padding ? `padding:${props.padding};` : "")}
   ${(props) => (props.margin ? `margin:${props.margin};` : "")}
 ${(props) => (props.bg ? `background-color:${props.bg};` : "")}
-/* ${(props) =>
-    props.is_flex
-      ? `display: flex; align-tiems: center; justify-content: space-between;`
-      : ""} */
 ${(props) =>
     props.is_flex
       ? `display: flex; align-items: center; justify-content: center;`
       : ""}
 ${(props) => (props.border ? `border:${props.border};` : "border: none;")}
-${(props) => (props.is_fix ? ` position: fixed;   z-index: 1;` : "")}
 ${(props) => (props.position ? `position: ${props.position};` : "")}
 ${(props) =>
     props.borderBottom ? `border-bottom : ${props.borderBottom};` : ""}
   ${(props) => (props.borderTop ? `border-top : ${props.borderTop};` : "")}
   ${(props) => (props.berderLeft ? `border-left : ${props.berderLeft};` : "")}
-${(props) =>
-    props.hide ? `display:none` : "none"}; // 가입양식 유효성 검사시 안내문구
   min-width: ${(props) => props.minWidth};
   max-width: ${(props) => props.maxWidth};
   min-height: ${(props) => props.minHeight};
-  z-index: ${(props) => (props.zindex ? `1;` : null)};
+  ${(props) => (props.radius ? `border-radius: ${props.radius};` : "")}
   border-radius: ${(props) => props.borderRadius};
-  @media (max-width: 700px) {
-    width: 100%;
-    padding: 0px;
-  }
-  ${(props) =>
-    props.media ? `@media (max-width:${props.media}){display:none};` : ""}
+  ${(props) => (props.overflow ? `overflow: ${props.overflow};` : "")}
 `;
 
 export default Grid;
