@@ -5,7 +5,7 @@ import {} from "react-icons";
 import { Grid, Text, Button, IconButton, Input, Image } from "../elements";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/userReducer";
-
+import { emailCheck } from "../shared/common";
 const Signup = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -18,6 +18,10 @@ const Signup = (props) => {
   const signup = () => {
     if (email === "" || pwd === "" || nickName === "") {
       alert("입력사항을 전부 기입해주세요");
+      return;
+    }
+    if (!emailCheck(email)) {
+      window.alert("이메일 형식이 맞지 않습니다!");
       return;
     }
     dispatch(userActions.SignUpDB(email, nickName, pwd));
@@ -104,6 +108,7 @@ const Signup = (props) => {
               borderRadius="3px"
             ></Input>
             <Input
+              type="password"
               _onChange={(e) => {
                 setPwd(e.target.value);
               }}
