@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Grid from '../elements/Grid'
 
 import { history } from "../redux/configureStore";
 import { Link } from "react-router-dom";
@@ -19,6 +18,9 @@ import { CgSmile, CgProfile } from "react-icons/cg";
 import { TiArrowRepeat } from "react-icons/ti";
 
 import Modal from '../components/Modal'
+import { apisMultipart } from "../shared/api";
+import { useDispatch } from "react-redux";
+import { addPostDB } from "../redux/modules/postReducer";
 
 
 // 헤더에서 바로 게시물 작성 모달창 불러오기
@@ -29,6 +31,8 @@ const Header = () => {
     const [content, setContent] = useState("")
     const [uploadFiles, setUploadFiles] = useState();
 
+    const dispatch = useDispatch();
+
     const handleContent = (e) => {
         setContent(e.target.value);
     }
@@ -36,7 +40,6 @@ const Header = () => {
     const addUploadURL = (e) => {
         setUploadFiles(e.target.files);
         const ImgUrlList = [...uploadURL]
-        console.log(ImgUrlList)
         for (let i = 0; i < e.target.files.length; i++) {
             const ImgUrl = URL.createObjectURL(e.target.files[i])
 
@@ -46,10 +49,19 @@ const Header = () => {
     }
 
     const addPost = () => {
-        return (
-            null
-        )
-    }
+        let fd = new FormData();
+        fd.append("imageUrl", uploadFiles)
+        fd.append("content", content);
+
+        return apisMultipart.addPost(fd).then((res) => {
+            const data = res.data;
+            alert("등록 성공");
+            setPostWrite(false);
+            setUploadURL([]);
+            setContent("");
+            dispatch(addPostDB(data));
+        });
+    };
 
     const closeUpload = (e) => {
         setUploadURL([]);

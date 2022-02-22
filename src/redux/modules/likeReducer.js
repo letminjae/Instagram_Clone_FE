@@ -1,5 +1,6 @@
 import { handleActions, createAction } from "redux-actions";
 import produce from "immer";
+import { apis } from "../../shared/api";
 
 //액션
 const ADD_LIKE = 'ADD_LIKE';
@@ -16,13 +17,19 @@ const initialState = {
 };
 
 //미들웨어
-const addLikeDB = (postId) => {
+export const addLikeDB = (postId) => {
+  apis.changeLike(postId)
+      .then((response) => {
+        console.log(response);
+      });
+};
 
-}
-
-const delLikeDB = (postId) => {
-
-}
+// const delLikeDB = (postId) => {
+//   apis.deleteLike(postId)
+//       .then((response => {
+//         console.log(response)
+//       }));
+// };
 
 //리듀서
 export default handleActions({
@@ -32,21 +39,10 @@ export default handleActions({
           list: action.payload.like,
         };
       },
-      [DEL_LIKE]: (state, action) => {
-        return {
-          ...state,
-          list: action.payload.like,
-        };
-      },
+      // [DEL_LIKE]: (state, action) => {
+      //   return {
+      //     ...state,
+      //     list: action.payload.like,
+      //   };
+      // },
 }, initialState);
-
-//export
-
-const actionCreators = {
-    addLike,
-    delLike,
-    addLikeDB,
-    delLikeDB,
-}
-
-export { actionCreators }

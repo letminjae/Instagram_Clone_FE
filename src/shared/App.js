@@ -12,12 +12,19 @@ import { actionCreators as loginActions } from "../redux/modules/userReducer";
 import { history } from "../redux/configureStore";
 import { ConnectedRouter } from "connected-react-router";
 import { Route } from "react-router-dom";
+import { setPostDB } from "../redux/modules/postReducer";
 
 function App() {
+
   const dispatch = useDispatch();
+
   React.useEffect(() => {
-    if (document.cookie) dispatch(loginActions.loginCheckDB());
+    if (document.cookie){
+    dispatch(loginActions.loginCheckDB());
+    }
   }, []);
+
+
   return (
     <React.Fragment>
       <ConnectedRouter history={history}>
