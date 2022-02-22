@@ -4,6 +4,8 @@ import Grid from "../elements/Grid";
 
 import { history } from "../redux/configureStore";
 import { Link } from "react-router-dom";
+import { apisMultipart } from "../shared/api";
+import { addPostDB } from "../redux/modules/postReducer";
 
 import { GrSettingsOption } from "react-icons/gr";
 import { IoMdPaperPlane } from "react-icons/io";
@@ -44,8 +46,19 @@ const Header = () => {
   };
 
   const addPost = () => {
-    return null;
-  };
+    let fd = new FormData();
+    fd.append("imageUrl", uploadFiles)
+    fd.append("content", content);
+
+    return apisMultipart.addPost(fd).then((res) => {
+        const data = res.data;
+        alert("등록 성공");
+        setPostWrite(false);
+        setUploadURL([]);
+        setContent("");
+        dispatch(addPostDB(data));
+    });
+};
 
   const closeUpload = (e) => {
     setUploadURL([]);

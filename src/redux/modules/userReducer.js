@@ -63,7 +63,7 @@ const loginCheckDB = (user) => {
   return function (dispatch, getState, { history }) {
     console.log(history);
     dispatch(setUser(user));
-    history.psuh("/");
+    history.push("/");
     // const tokenCheck = document.cookie;
     // if (tokenCheck) {
     //   dispatch(setUser({ id: userId }));

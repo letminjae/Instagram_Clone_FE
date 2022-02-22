@@ -2,7 +2,6 @@ import axios from "axios";
 
 const tokencheck = document.cookie;
 const token = tokencheck.split("=")[1];
-console.log(token);
 const api = axios.create({
   // 실제 베이스 유알엘
   baseURL: "http://13.125.107.22:8080",

@@ -1,16 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { chatCreators as chatActions } from "../redux/modules/dmReducer";
 
 import Header from "../components/Header";
+import { TimeFormat } from "../shared/TimeData";
 
 import { FiEdit } from "react-icons/fi";
 import { HiOutlineInformationCircle } from "react-icons/hi"
 
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs';
+import { apis } from "../shared/api";
 
 
 const Direct = () => {
@@ -24,8 +27,8 @@ const Direct = () => {
   const roomName = params.roomName;
 
   //redux 데이터
-  const datas = useSelector((state) => state.chat.chatList);
-  const roomInfoList = useSelector((state) => state.chat.roomInfoList);
+  const datas = useSelector((state) => state.dm.chatList);
+  const roomInfoList = useSelector((state) => state.dm.roomInfoList);
 
   //토큰
   const accessToken = document.cookie.split("=")[1];
@@ -55,28 +58,28 @@ const Direct = () => {
   };
 
   //메세지 보내면 스크롤 자동내림
-  const scrollMoveBottom = () => {
-    scrollRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-    });
-  };
+  // const scrollMoveBottom = () => {
+  //   scrollRef.current.scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "end",
+  //     inline: "nearest",
+  //   });
+  // };
 
   useEffect(() => {
     //소켓 연결
     const sock =
-      new SockJS("https://seongeunyang.shop/ws-stomp");
+      new SockJS("http://13.125.107.22:8080/ws-stomp");
 
     setStomp(Stomp.over(sock));
-    dispatch(chatActions.getRoomInfoDB(roomId)); //방정보 가져오기
-    dispatch(chatActions.getContentChatDB(roomId)); //대화내용 가져오기
+    // dispatch(chatActions.getRoomInfoDB(roomId)); //방정보 가져오기
+    // dispatch(chatActions.getContentChatDB(roomId)); //대화내용 가져오기
   }, []);
 
   useEffect(() => {
-    scrollMoveBottom();
+    // scrollMoveBottom();
     chatConnect(); //채팅룸 연결
-
+    
     return () => {
       chatDisconnect();
       dispatch(chatActions.reset());
@@ -87,7 +90,7 @@ const Direct = () => {
   useEffect(() => {
     setMessageList(datas);
     setTimeout(() => {
-      scrollMoveBottom(); //스크롤 다운
+      // scrollMoveBottom(); //스크롤 다운
     }, 100);
   }, [datas]);
 
@@ -101,6 +104,7 @@ const Direct = () => {
           `/chatroom/api/chat/room`,
           (message) => {
             const responseData = JSON.parse(message.body); 
+            console.log(responseData)
             messageDatas(responseData);
           },
           token
@@ -108,6 +112,7 @@ const Direct = () => {
       });
     } catch (err) {}
   };
+
 
   // stomp 연결해제
   const chatDisconnect = () => {
@@ -129,10 +134,12 @@ const Direct = () => {
       };
       stomp.debug = null;
       await stomp.send("/chat/message", token, JSON.stringify(datas)); // 메세지를 담고있는것, chat/message로 보낸다
-      scrollMoveBottom(); //스크롤 다운
+      // scrollMoveBottom(); //스크롤 다운
       setMessage("");
     }
   };
+
+  
 
 
 
@@ -204,16 +211,16 @@ const Direct = () => {
                                 </UserInfoContainer>
 
                                 {/* DM 내용 */}
-                                <ScrollContainer onScroll={null}>
-                                    {/* {messageData?.map((item, index) => {
-                                        const { created_at, message } = item;
+                                <ScrollContainer>
+                                    {messageList?.map((item, index) => {
+                                      const { message, status } = item;
                                         return (
                                             <>
                                                 <ContentsContainer key={index}>
                                                     <MessageList>
-                                                        {item.user_account === user_account ? (
+                                                        {message.user_account === user_account ? (
                                                             <PostUserContainer>
-                                                                <p>{TimeFormat(created_at)}</p>
+                                                                {/* <p>{TimeFormat(created_at)}</p> */}
                                                                 <PostUser need={message.length > 20}>
                                                                     <Span>{message}</Span>
                                                                 </PostUser>
@@ -223,7 +230,7 @@ const Direct = () => {
                                                                 <SendDMUser need={message.length > 20}>
                                                                     <Span>{message}</Span>
                                                                 </SendDMUser>
-                                                                <p>{TimeFormat(created_at)}</p>
+                                                                {/* <p>{TimeFormat(created_At)}</p> */}
                                                             </SendUserContainer>
                                                         )}
                                                     </MessageList>
@@ -231,19 +238,18 @@ const Direct = () => {
                                             </>
                                         );
                                     })}
-                                    <div ref={messagesEndRef} /> */}
+                                    {/* <div ref={messagesEndRef} /> */}
                                 </ScrollContainer>
 
                                 {/* DM 보내는 작성 칸 */}
                                 <InputForm>
                                     <Input
-                                        name="message"
-                                        value={null}
-                                        onChange={null}
-                                        onKeyPress={null}
+                                        value={message}
+                                        onChange={messageChat}
+                                        onKeyPress={onKeyPress}
                                         placeholder="메시지 입력..."
                                     />
-                                    <P type={null} onClick={() => {}}>
+                                    <P onClick={sendMessage}>
                                         메시지보내기
                                     </P>
                                 </InputForm>

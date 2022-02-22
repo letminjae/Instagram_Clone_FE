@@ -14,6 +14,7 @@ import { CgSmile } from "react-icons/cg";
 
 import { addLikeDB } from "../redux/modules/likeReducer";
 import { delPostDB } from "../redux/modules/postReducer";
+import { apis } from "../shared/api";
 
 export default function Post(props) {
     //props 값
@@ -45,6 +46,7 @@ export default function Post(props) {
     //포스트 삭제
     const deletePost = () => {
         alert("정말 삭제하시겠습니까?")
+        apis.deletePost()
         .then((response) => {
           console.log("삭제 완료")
           dispatch(delPostDB(postId));
