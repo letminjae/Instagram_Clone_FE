@@ -1,13 +1,140 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { chatCreators as chatActions } from "../redux/modules/dmReducer";
 
 import Header from "../components/Header";
 
 import { FiEdit } from "react-icons/fi";
 import { HiOutlineInformationCircle } from "react-icons/hi"
 
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs';
+
 
 const Direct = () => {
+
+  const dispatch = useDispatch();
+  const scrollRef = useRef();
+
+  //경로
+  const params = useParams();
+  const roomId = params.roomId;
+  const roomName = params.roomName;
+
+  //redux 데이터
+  const datas = useSelector((state) => state.chat.chatList);
+  const roomInfoList = useSelector((state) => state.chat.roomInfoList);
+
+  //토큰
+  const accessToken = document.cookie.split("=")[1];
+  const token = { Authorization: `${accessToken}` };
+
+  // useState관리
+  const [message, setMessage] = useState(""); // 메시지 내용 상태관리
+  const [messageList, setMessageList] = useState([]); // 쌓인 메시지 내용 상태관리
+  const [stomp, setStomp] = useState(); // 스텀프 상태관리
+
+  // 쌓인 대화
+  const messageDatas = (recv) => {
+    setMessageList((prev) => [...prev, recv]);
+  };
+
+  //메세지 내용
+  const messageChat = (e) => {
+    const content = e.target.value;
+    setMessage(content);
+  };
+
+  //엔터치면 메세지 보내지게하기 : 메시지의 공백제거한 길이가 0이 아니면 엔터키 발동
+  const onKeyPress = (e) => {
+    if (e.key === "Enter" && message.replace(/\s|/gi, "").length !== 0) {
+      sendMessage();
+    }
+  };
+
+  //메세지 보내면 스크롤 자동내림
+  const scrollMoveBottom = () => {
+    scrollRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
+  };
+
+  useEffect(() => {
+    //소켓 연결
+    const sock =
+      new SockJS("https://seongeunyang.shop/ws-stomp");
+
+    setStomp(Stomp.over(sock));
+    dispatch(chatActions.getRoomInfoDB(roomId)); //방정보 가져오기
+    dispatch(chatActions.getContentChatDB(roomId)); //대화내용 가져오기
+  }, []);
+
+  useEffect(() => {
+    scrollMoveBottom();
+    chatConnect(); //채팅룸 연결
+
+    return () => {
+      chatDisconnect();
+      dispatch(chatActions.reset());
+    };
+  }, [stomp]);
+
+  // 대화내용 가져오기
+  useEffect(() => {
+    setMessageList(datas);
+    setTimeout(() => {
+      scrollMoveBottom(); //스크롤 다운
+    }, 100);
+  }, [datas]);
+
+  // stomp연결
+  const chatConnect = () => {
+    try {
+      stomp.debug = null;
+      stomp.connect(token, () => {
+        stomp.subscribe(
+          // `/sub/api/chat/room/${roomId}`,
+          `/chatroom/api/chat/room`,
+          (message) => {
+            const responseData = JSON.parse(message.body); 
+            messageDatas(responseData);
+          },
+          token
+        );
+      });
+    } catch (err) {}
+  };
+
+  // stomp 연결해제
+  const chatDisconnect = () => {
+    try {
+      stomp.debug = null;
+      stomp.disconnect(() => {
+        stomp.unsubscribe("sub-0");
+      }, token);
+    } catch (err) {}
+  };
+
+  //메세지 보내기
+  const sendMessage = async () => {
+    if (message.replace(/\s|/gi, "").length !== 0) {
+      const datas = {
+        status: "TALK",
+        // roomId: roomId,
+        message: message,
+      };
+      stomp.debug = null;
+      await stomp.send("/chat/message", token, JSON.stringify(datas)); // 메세지를 담고있는것, chat/message로 보낸다
+      scrollMoveBottom(); //스크롤 다운
+      setMessage("");
+    }
+  };
+
+
 
     return (
         <React.Fragment>

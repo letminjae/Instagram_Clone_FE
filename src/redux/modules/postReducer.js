@@ -1,10 +1,9 @@
 import { handleActions, createAction } from 'redux-actions';
 import produce from 'immer'
-
-
+import { apis } from '../../shared/api';
 
 //액션
-const SET_POST = 'GET_POST';
+const SET_POST = 'SET_POST';
 const ADD_POST = 'ADD_POST';
 const DEL_POST = 'DEL_POST';
 
@@ -12,44 +11,45 @@ const DEL_POST = 'DEL_POST';
 //initialState
 const initialState = {
     list: [],
-    likedPostList: [],
+    likeList: [],
 }
 
 
 //액션생성함수
-const setPost = createAction(SET_POST, (postList, liked) => ({
-    postList,
-    liked,
-}));
-const addPost = createAction(ADD_POST, (postData) => ({
-    postData,
-}))
-const delPost = createAction(DEL_POST, (postId) => ({
-    postId,
-}))
+const setPost = createAction(SET_POST, (postList, liked) => ({ postList, liked }));
+const addPost = createAction(ADD_POST, (postData) => ({ postData }))
+const delPost = createAction(DEL_POST, (postId) => ({ postId }))
 
 
 //미들웨어
-const setPostDB = () => {
+export const setPostDB = () => {
     return function (dispatch, getState, { history }) {
-        // apis.getPost()
-        //     .then((response) => {
-        //         console.log(response)
-        //     })
-        //     .error((error) => console.log(error))
+        apis.getPost()
+            .then(function (response){
+                const _postList = response.data
+                _postList.map((post,i) => {
+                    console.log(post)
+                    dispatch((setPost(post)))
+                })
+            })
+        
+        // dispatch(setPost(data.data))
     }
 }
 
-const addPostDB = (data) => {
+export const addPostDB = (data) => {
     return function (dispatch, getState, { history }) {
-
-
+        dispatch(addPost(data));
+        dispatch(setPostDB());
     }
 }
 
-const delPostDB = (postId) => {
+export const delPostDB = (postId) => {
     return function (dispatch, getState, { history }) {
-
+        apis.deletePost(postId)
+            .then((response) => {
+                dispatch(delPost(postId));
+            })
     }
 }
 
@@ -57,10 +57,13 @@ const delPostDB = (postId) => {
 
 //리듀서
 export default handleActions({
-    [SET_POST]: (state, action) => produce(state, (draft) => {
-        draft.list.push(...action.payload.postlist)
-        draft.likedPostList.push(...action.payload.liked)
-    }),
+    [SET_POST]: (state, action) => {
+        return {
+            ...state,
+            list: action.payload.postList,
+            likeList: action.payload.liked,
+        }
+    },
     [ADD_POST]: (state, action) => produce(state, (draft) => {
         draft.list.unshift(action.payload.post);
     }),
@@ -69,16 +72,3 @@ export default handleActions({
     }),
 
 }, initialState);
-
-
-//export
-const actionCreators = {
-    setPost,
-    addPost,
-    delPost,
-    setPostDB,
-    addPostDB,
-    delPostDB,
-}
-
-export { actionCreators }

@@ -21,6 +21,20 @@ api.interceptors.request.use(function (config) {
   return config;
 });
 
+const apiMultipart = axios.create({
+  baseURL: "http://13.125.107.22:8080",
+  headers: {
+    "content-type": "multipart/form-data",
+    token: token,
+  },
+});
+
+apiMultipart.interceptors.request.use(function (config) {
+  const accessToken = document.cookie.split("=")[1];
+  config.headers.common["authorization"] = `${accessToken}`;
+  return config;
+});
+
 export const apis = {
   login: (email, pwd) =>
     api.post("/user/login", { email: email, password: pwd }),
@@ -34,4 +48,28 @@ export const apis = {
     api.get(`/user/info`, {
       token: token,
     }),
+  //포스트 로드, 삭제
+  getPost: () => api.get("api/post"),
+  deletePost: (postId) => api.delete(`api/post/${postId}`, {}),
+
+  //좋아요 바꾸기
+  changeLike: (postId) => api.post(`api/like/${postId}`, { postId }),
+  // deleteLike: (postId) => api.delete("api/like", {postId}),
+
+  //DM 채팅
+  chatRoom: (postId) => api.post(`/chat/room/${postId}`, {}),
+
+  chatRoomList: () => api.get(`/chat/rooms`, {}),
+
+  chatMSG: (roomId) => api.get(`/chat/message/${roomId}`),
+
+  chatShowProfile: (roomId) => api.get(`/user/introduction/${roomId}`),
+
+  chatRoomInfo: (roomId) => api.get(`/chat/room/${roomId}/carpool`),
+
+  chatRoomDelete: (roomId) => api.delete(`/chat/room/${roomId}`),
+};
+
+export const apisMultipart = {
+  addPost: (formdata) => apiMultipart.post("/api/post", { formdata }),
 };
