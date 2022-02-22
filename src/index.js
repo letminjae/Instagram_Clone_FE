@@ -5,9 +5,6 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/configureStore";
-import { setAuthorizationToken } from "./shared/setAuthorizationToken";
-
-setAuthorizationToken(localStorage.jwtToken);
 
 ReactDOM.render(
   <Provider store={store}>

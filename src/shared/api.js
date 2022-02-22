@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const tokenCheck = document.cookie;
-const token = tokenCheck.split("=")[1];
+const tokencheck = document.cookie;
+const token = tokencheck.split("=")[1];
+console.log(token);
 const api = axios.create({
   // 실제 베이스 유알엘
   baseURL: "http://13.125.107.22:8080",
@@ -14,11 +15,11 @@ const api = axios.create({
   },
 });
 
-// api.interceptors.request.use(function (config) {
-//   const accessToken = document.cookie.split("=")[1];
-//   config.headers.common["authorization"] = `${accessToken}`;
-//   return config;
-// });
+api.interceptors.request.use(function (config) {
+  const accessToken = document.cookie.split("=")[1];
+  config.headers.common["authorization"] = `${accessToken}`;
+  return config;
+});
 
 export const apis = {
   login: (email, pwd) =>
@@ -29,8 +30,8 @@ export const apis = {
       nickname: nickname,
       password: pwd,
     }),
-  //   userInfo: (token) =>
-  //     api.post(`/user/userinfo`, {
-  //       authorization: token,
-  //     }),
+  userInfo: (token) =>
+    api.get(`/user/info`, {
+      token: token,
+    }),
 };

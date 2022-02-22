@@ -8,17 +8,17 @@ import { setAuthorizationToken } from "../../shared/setAuthorizationToken";
 const LOG_OUT = "LOG_OUT";
 const GET_USER = "GET_USER";
 const SET_USER = "SET_USER";
-// const USERINFO = "USERINFO";
+const USERINFO = "USERINFO";
 
 // action creators
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 const getUser = createAction(GET_USER, (user) => ({ user }));
 const setUser = createAction(SET_USER, (user) => ({ user }));
-// const userInfo = createAction(SET_USER, (user) => ({ user }));
+const userInfo = createAction(SET_USER, (user) => ({ user }));
 
 // initialState
 const initialState = {
-  user: null,
+  data: { email: "", nickname: "" },
   is_login: false,
 };
 
@@ -28,11 +28,34 @@ const loginDB = (email, pwd) => {
     apis
       .login(email, pwd)
       .then((res) => {
-        setCookie("token", res.data.token, 5);
-        dispatch(setUser({ email: email }));
+        setCookie("token", res.data.token, 1);
+        const token = res.data.token;
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.token);
+        console.log(token);
+        apis
+          .userInfo(token)
+          .then((res) => {
+            console.log(res.data);
+            console.log(res.data.data);
+            console.log(res.data.token);
+            console.log(res.data.data.email);
+            console.log(res.data.data.nickname);
+            console.log(token);
+            dispatch(
+              setUser({
+                email: res.data.data.email,
+                nickname: res.data.data.nickname,
+                token: token,
+              })
+            );
+          })
+          .catch((error) => console.log(error));
         history.push("/");
+        // dispatch(userInfo(res.headers["authorization"], id, pwd));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => alert("회원정보가 일치하지 않습니다."));
   };
 };
 
@@ -40,6 +63,7 @@ const loginCheckDB = (user) => {
   return function (dispatch, getState, { history }) {
     console.log(history);
     dispatch(setUser(user));
+    history.psuh("/");
     // const tokenCheck = document.cookie;
     // if (tokenCheck) {
     //   dispatch(setUser({ id: userId }));
@@ -54,7 +78,7 @@ const logOutDB = () => {
     deleteCookie("token");
     // localStorage.removeItem("authorization");
     dispatch(logOut({ userinfo: { email: "", nickname: "" }, token: null }));
-    history.replace("/");
+    history.replace("/signin");
     history.go(0);
   };
 };
@@ -88,8 +112,15 @@ export default handleActions(
   {
     [SET_USER]: (state, action) =>
       produce(state, (draft) => {
+        console.log(action);
+        console.log(state);
+        console.log(draft);
         // setCookie("is_login", "success");
-        draft.userinfo = action.payload.user;
+        draft.token = action.payload.user.token;
+        draft.userinfo = {
+          email: action.payload.user.email,
+          nickname: action.payload.user.nickname,
+        };
         draft.is_login = true;
       }),
     [LOG_OUT]: (state, action) =>

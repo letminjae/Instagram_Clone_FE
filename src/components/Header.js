@@ -13,11 +13,14 @@ import { AiOutlinePicture, AiOutlineClose } from "react-icons/ai";
 import { BsPlayBtn, BsPlusSquare, BsPlusSquareFill } from "react-icons/bs";
 import { CgSmile, CgProfile } from "react-icons/cg";
 import { TiArrowRepeat } from "react-icons/ti";
+import { useDispatch } from "react-redux";
+import { actionCreators as userActions } from "../redux/modules/userReducer";
 
 import Modal from "../components/Modal";
 
 // 헤더에서 바로 게시물 작성 모달창 불러오기
 const Header = () => {
+  const dispatch = useDispatch();
   const [profileButton, setProfileButton] = useState(false);
   const [postWrite, setPostWrite] = useState(false);
   const [uploadURL, setUploadURL] = useState([]);
@@ -132,8 +135,10 @@ const Header = () => {
                   </SideGoProfile>
                 </Link>
                 <SideGoProfile
+                  onClick={() => {
+                    dispatch(userActions.logOutDB());
+                  }}
                   style={{ borderTop: "1px solid #ddd", cursor: "pointer" }}
-                  onClick={null}
                 >
                   <SideBarText style={{ margin: "0" }}>로그아웃</SideBarText>
                 </SideGoProfile>

@@ -5,6 +5,7 @@ import {} from "react-icons";
 import { Grid, Text, Button, IconButton, Input, Image } from "../elements";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/userReducer";
+import { emailCheck } from "../shared/common";
 
 const Signin = (props) => {
   const dispatch = useDispatch();
@@ -21,6 +22,10 @@ const Signin = (props) => {
     }
     if (pwd === "") {
       alert("비밀번호를 입력해주세요.");
+      return;
+    }
+    if (!emailCheck(email)) {
+      window.alert("이메일 형식이 맞지 않습니다!");
       return;
     }
     dispatch(userActions.loginDB(email, pwd));
@@ -58,6 +63,7 @@ const Signin = (props) => {
               borderRadius="3px"
             ></Input>
             <Input
+              type="password"
               _onChange={(e) => {
                 setPwd(e.target.value);
               }}

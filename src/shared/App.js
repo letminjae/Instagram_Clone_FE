@@ -14,10 +14,10 @@ import { ConnectedRouter } from "connected-react-router";
 import { Route } from "react-router-dom";
 
 function App() {
-  const dispatch = useDispatch();
-  React.useEffect(() => {
-    if (document.cookie) dispatch(loginActions.loginCheckDB());
-  }, []);
+  // const dispatch = useDispatch();
+  // React.useEffect(() => {
+  //   if (document.cookie) dispatch(loginActions.loginCheckDB());
+  // }, []);
   return (
     <React.Fragment>
       <ConnectedRouter history={history}>
