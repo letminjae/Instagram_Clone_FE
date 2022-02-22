@@ -1,12 +1,13 @@
 import React from "react";
 import { actionCreators as loginActions } from "../redux/modules/userReducer";
 import { Grid, Text, Button, IconButton, Image } from "../elements";
-import { useDispatch, useSelector } from "react-redux";
+
 import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as commentActions } from "../redux/modules/commentReducer";
+
 const Mypage = (props) => {
   const dispatch = useDispatch();
-  const userinfo = useSelector((state) => state.userReducer.userinfo);
+
+  const userinfo = useSelector((state) => state.userReducer.data);
   console.log(userinfo);
   return (
     <React.Fragment>
