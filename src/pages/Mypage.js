@@ -5,10 +5,10 @@ import { Grid, Text, Button, IconButton, Image } from "../elements";
 import { useSelector, useDispatch } from "react-redux";
 
 const Mypage = (props) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const userinfo = useSelector((state) => state.userReducer.data);
-  console.log(userinfo);
+  // const userinfo = useSelector((state) => state.userReducer.data);
+  // console.log(userinfo);
   return (
     <React.Fragment>
       <Grid
