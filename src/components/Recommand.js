@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Grid from "../elements/Grid";
 import Text from '../elements/Text'
 import Image from '../elements/Image'
 
@@ -19,12 +18,12 @@ export default function Recommand() {
                 <Conversion>깃허브</Conversion>
             </MyProfile>
 
-            <Grid is_flex margin="20px 0px 0px 0px">
+            <OtherRecommand>
                 <Text bold size="14px">회원님을 위한 추천</Text>
-                <Text margin="0px 0px 0px 85px" bold size="14px" color="#4368FF;">모두 보기</Text>
-            </Grid>
+                <Text margin="14px 0px 0px 80px" bold size="14px" color="#4368FF;">모두 보기</Text>
+            </OtherRecommand>
 
-            <Grid is_flex margin="10px 0px 10px 0px" position="relative">
+            <OtherPeople>
                 <OtherImage
                     src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
                     alt="박보검" />
@@ -33,9 +32,9 @@ export default function Recommand() {
                     <RealName>Back-End Developer</RealName>
                 </Name>
                 <BackConversion>깃허브</BackConversion>
-            </Grid>
+            </OtherPeople>
 
-            <Grid is_flex margin="20px 0px 10px 0px" position="relative">
+            <OtherPeople>
                 <OtherImage
                     src="https://cdnweb01.wikitree.co.kr/webdata/editor/202011/11/img_20201111165202_be9a21aa.webp"
                     alt="송중기" />
@@ -44,9 +43,9 @@ export default function Recommand() {
                     <RealName>Back-End Developer</RealName>
                 </Name>
                 <BackConversion>깃허브</BackConversion>
-            </Grid>
+            </OtherPeople>
 
-            <Grid is_flex margin="20px 0px 10px 0px" position="relative">
+            <OtherPeople>
                 <OtherImage
                     src="https://t1.daumcdn.net/cfile/tistory/99BA8E425ADF22A30D"
                     alt="강동원" />
@@ -55,9 +54,9 @@ export default function Recommand() {
                     <RealName>Back-End Developer</RealName>
                 </Name>
                 <BackConversion>깃허브</BackConversion>
-            </Grid>
+            </OtherPeople>
 
-            <Grid is_flex margin="20px 0px 10px 0px" position="relative">
+            <OtherPeople>
                 <OtherImage
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyW35vmdcrv9fqVq57o40A1XDyFzsYXxAi5g&usqp=CAU"
                     alt="서강준" />
@@ -66,9 +65,9 @@ export default function Recommand() {
                     <RealName>Front-End Developer</RealName>
                 </Name>
                 <FrontConversion>깃허브</FrontConversion>
-            </Grid>
+            </OtherPeople>
 
-            <Grid is_flex margin="20px 0px 10px 0px" position="relative">
+            <OtherPeople>
                 <OtherImage
                     src="https://file2.nocutnews.co.kr/newsroom/image/2020/01/01/20200101093641185867_0_786_786.jpg"
                     alt="김수현" />
@@ -77,7 +76,7 @@ export default function Recommand() {
                     <RealName>Front-End Developer</RealName>
                 </Name>
                 <FrontConversion>깃허브</FrontConversion>
-            </Grid>
+            </OtherPeople>
 
             <Footer>
                 소개·도움말·홍보·센터API·채용정보 <br/>
@@ -142,6 +141,17 @@ const FrontConversion = styled.div`
     font-weight: bold;
     font-size: 12px;
     padding: 6px 0px 0px 75px;
+`
+
+const OtherRecommand = styled.div`
+    display: flex; 
+    margin : 20px 0px 10px 0px;
+`
+
+const OtherPeople = styled.div`
+    display: flex;
+    position: relative;
+    margin : 20px 0px 10px 0px;
 `
 
 const OtherImage = styled.img`

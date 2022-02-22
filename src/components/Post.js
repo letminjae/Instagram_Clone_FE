@@ -1,17 +1,35 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { history } from '../redux/configureStore'
+import { useDispatch } from "react-redux";
+
 import Modal from "./Modal";
-import Text from "../elements/Text";
 
 import { BsThreeDots } from "react-icons/bs";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { IoMdPaperPlane } from "react-icons/io";
 import { BsChat } from "react-icons/bs";
 import { RiBookmarkLine } from "react-icons/ri";
 import { CgSmile } from "react-icons/cg";
 
+import { addLikeDB } from "../redux/modules/likeReducer";
+import { delPostDB } from "../redux/modules/postReducer";
+
 export default function Post(props) {
+    //props 값
+    const post = props;
+    const postId = post.postId;
+    const imageUrl = post.imageUrl
+    const liked = post.liked;
+    const createdAt = post.createdAt.split("T")[1].split(":")[0];
+
+    //디스패치
+    const dispatch = useDispatch();
+
+    //좋아요
+    const [like, setLike] = useState(liked);
+    const [addliked, setAddLiked] = useState(0);
+    const [delliked, setDelLiked] = useState(0);
 
     //댓글
     const [hasComment, setHasComment] = useState("")
@@ -19,18 +37,35 @@ export default function Post(props) {
     //포스트 헤더의 더보기
     const [moreInfo, setMoreInfo] = useState(false)
 
-
     //댓글 밸류값
     const changeComment = (e) => {
         setHasComment(e.target.value);
     }
 
-
     //포스트 삭제
     const deletePost = () => {
-        return (
-            null
-        )
+        alert("정말 삭제하시겠습니까?")
+        .then((response) => {
+          console.log("삭제 완료")
+          dispatch(delPostDB(postId));
+          setMoreInfo(false);
+        })
+    }
+
+    //좋아요 추가
+    const addLike = () => {
+      setLike(true);
+      setAddLiked(1);
+      setDelLiked(0);
+      addLikeDB(postId);
+    };
+
+    //좋아요 삭제
+    const delLike = () => {
+      setLike(false);
+      setAddLiked(0);
+      setDelLiked(-1);
+      addLikeDB(postId);
     }
 
     return (
@@ -44,7 +79,7 @@ export default function Post(props) {
                             alt="프로필사진"
                         />
                     </PostTitleImgArea>
-                    <PostTitle>anonymous</PostTitle>
+                    <PostTitle>{post.nickname}</PostTitle>
                 </HeaderLeft>
                 <PostMenu>
                     <MenuArea>
@@ -80,22 +115,35 @@ export default function Post(props) {
 
             {/* 중간의 이미지 */}
             <PostCenter>
-                <PostMainImg src="https://cphoto.asiae.co.kr/listimglink/6/2021121415050860632_1639461907.jpg" alt="img" />
+                <PostMainImg src={imageUrl} />
             </PostCenter>
 
             {/* 푸터 : 좋아요 기능, 댓글, 디엠 기능, 북마크(보류), 내용 */}
             <PostFooter>
                 <FooterMenu>
+
                     {/* 온클릭 이벤트 : 좋아요 누르면 채워진 하트, 좋아요 취소하면 비워진 하트 기능*/}
-                    <AiOutlineHeart
+                    {(like && (
+                      <AiFillHeart
                         size="28"
-                        style={{ margin: "8px" }}
-                        onClick={null}
-                    />
+                        style={{ margin: "8px"}}
+                        onClick={delLike}
+                        color="red"
+                      />
+                    )) || (
+                      <AiOutlineHeart
+                      size="28"
+                      style={{ margin: "8px" }}
+                      onClick={addLike}
+                      />
+                    )}
+
                     {/* 댓글 */}
                     <BsChat size="28" style={{ margin: "8px" }} />
+
                     {/* 디엠 */}
                     <IoMdPaperPlane size="28" style={{ margin: "8px" }} onClick={() => { history.push('/direct') }} />
+                    
                     {/* 북마크 */}
                     <RiBookmarkLine
                         size="28"
@@ -109,24 +157,26 @@ export default function Post(props) {
 
                 {/* 좋아요 몇개인지 기능 해야됨 */}
                 <LikeArea>
-                    <Like>좋아요 0개</Like>
+                  좋아요 {post.likeCount}개
+                    {/* {liked && <Like>좋아요 {post.likeCount + delLike}개 </Like>}
+                    {liked || <Like>좋아요 {post.likeCount + addLike}개 </Like>} */}
                 </LikeArea>
 
                 {/* 콘텐츠 내용 */}
                 <PostContent>
-                    <Username>anonymous</Username>
+                    <Username>{post.nickname}</Username>
                     <ContentMore>
-                        <Content>#노제</Content>
+                        <Content>{post.content}</Content>
                     </ContentMore>
                 </PostContent>
 
                 {/* 댓글 모두 보기 (추후 기능) */}
                 <CommentsShow>
-                    댓글 0개 모두 보기
+                    댓글 {post.commentCount}개 모두 보기
                 </CommentsShow>
 
                 {/* 시간 */}
-                <ModifiedAt>0시간 전</ModifiedAt>
+                <ModifiedAt>{createdAt}시간 전</ModifiedAt>
 
                 {/* 댓글 작성 기능*/}
                 <WriteComment>

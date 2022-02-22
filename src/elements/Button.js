@@ -14,6 +14,8 @@ const Button = (props) => {
     padding,
     height,
     borderRadius,
+    fontWeight,
+    fontSize,
   } = props;
   const styles = {
     width,
@@ -25,6 +27,8 @@ const Button = (props) => {
     padding,
     height,
     borderRadius,
+    fontWeight,
+    fontSize,
   };
   return (
     <>
@@ -47,9 +51,13 @@ Button.defaultProps = {
   border: false,
   padding: null,
   borderRadius: null,
+  fontWeight: null,
+  fontSize: null,
 };
 
 const BtnBox = styled.button`
+  font-size: ${(props) => props.fontSize};
+  font-weight: ${(props) => props.fontWeight};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   padding: ${(props) => props.padding};

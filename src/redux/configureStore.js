@@ -6,8 +6,8 @@ import { connectRouter } from "connected-react-router";
 import User from "./modules/userReducer";
 import Post from "./modules/postReducer";
 import Comment from "./modules/commentReducer";
-import Like from './modules/likeReducer'
-
+import DM from "./modules/dmReducer"
+import Like from "./modules/likeReducer";
 
 export const history = createBrowserHistory();
 
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
   post: Post,
   comment: Comment,
   like: Like,
+  dm: DM,
   router: connectRouter(history),
 });
 
@@ -23,10 +24,9 @@ const middlewares = [thunk.withExtraArgument({ history: history })];
 
 const env = process.env.NODE_ENV;
 
-
 if (env === "development") {
-  const { logger } = require("redux-logger")
-  middlewares.push(logger); 
+  const { logger } = require("redux-logger");
+  middlewares.push(logger);
 }
 
 const composeEnhancers =
