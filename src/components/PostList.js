@@ -6,12 +6,11 @@ import Post from "./Post";
 
 const PostList = () => {
     const [post_list, setPostList] = useState([]);
-    const [likeList, setLikeList] = useState([]);
+    const likeList = useSelector((state) => state.post.likeList)
     
     useEffect(() => {
         apis.getPost()
             .then(function (response){
-                console.log(response.data)
                 setPostList(response.data)
             }).catch(function (error){
                 console.log(error)
@@ -31,12 +30,12 @@ const PostList = () => {
                     const content = p.content;
                     const createdAt = p.createdAt;
 
-                    // let liked = false;
-                    // for (let i = 0; i < likeList.length; i++) {
-                    //     if(likeList[i] === postId) {
-                    //         liked = true;
-                    //     }
-                    // }
+                    let liked = false;
+                    for (let i = 0; i < likeList.length; i++) {
+                        if(likeList[i] === postId) {
+                            liked = true;
+                        }
+                    }
 
                     return (
                         <Post

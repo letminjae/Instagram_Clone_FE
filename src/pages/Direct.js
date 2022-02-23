@@ -18,6 +18,18 @@ import { apis } from "../shared/api";
 
 const Direct = () => {
 
+  const [userlist, setUserList] = useState([]);
+
+  useEffect(() => {
+    apis.getUser()
+        .then(function (response){
+            console.log(response)
+            // setUserList(response.data)
+        }).catch(function (error){
+            console.log(error)
+        })
+    }, [])
+
   const dispatch = useDispatch();
   const scrollRef = useRef();
 
@@ -31,8 +43,8 @@ const Direct = () => {
   const roomInfoList = useSelector((state) => state.dm.roomInfoList);
 
   //토큰
-  const accessToken = document.cookie.split("=")[1];
-  const token = { Authorization: `${accessToken}` };
+  const token = document.cookie.split("=")[1];
+  const _token = { Authorization: `${token}` };
 
   // useState관리
   const [message, setMessage] = useState(""); // 메시지 내용 상태관리
@@ -57,11 +69,8 @@ const Direct = () => {
     }
   };
 
-  const getUser = apis.getUser()
-  console.log(getUser)
 
-
-  //메세지 보내면 스크롤 자동내림
+  // 메세지 보내면 스크롤 자동내림
   // const scrollMoveBottom = () => {
   //   scrollRef.current.scrollIntoView({
   //     behavior: "smooth",
@@ -222,14 +231,14 @@ const Direct = () => {
                                             <>
                                                 <ContentsContainer key={index}>
                                                     <MessageList>
-                                                        {/* {message.user_account === user_account ? ( */}
-                                                            {/* // <PostUserContainer> */}
-                                                                {/* <p>{TimeFormat(created_at)}</p> */}
-                                                                {/* <PostUser need={message.length > 20}> */}
-                                                                    {/* <Span>{message}</Span> */}
-                                                                {/* </PostUser> */}
-                                                            {/* </PostUserContainer> */}
-                                                        // ) : 
+                                                        {message === message ? ( 
+                                                            <PostUserContainer>
+                                                                {/* <p>{TimeFormat(created_At)}</p> */}
+                                                                <PostUser need={message.length > 20}>
+                                                                    <Span>{message}</Span>
+                                                                </PostUser>
+                                                            </PostUserContainer>
+                                                        ) : 
                                                         (
                                                             <SendUserContainer>
                                                                 <SendDMUser need={message.length > 20}>
@@ -238,7 +247,7 @@ const Direct = () => {
                                                                 {/* <p>{TimeFormat(created_At)}</p> */}
                                                             </SendUserContainer>
                                                         )
-                                                        // }
+                                                        }
                                                     </MessageList>
                                                 </ContentsContainer>
                                             </>

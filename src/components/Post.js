@@ -24,6 +24,8 @@ export default function Post(props) {
     const liked = post.liked;
     const createdAt = post.createdAt.split("T")[1].split(":")[0];
 
+    console.log(liked)
+
     //디스패치
     const dispatch = useDispatch();
 
@@ -160,9 +162,9 @@ export default function Post(props) {
 
                 {/* 좋아요 몇개인지 기능 해야됨 */}
                 <LikeArea>
-                  좋아요 {post.likeCount}개
-                    {/* {liked && <Like>좋아요 {post.likeCount + delLike}개 </Like>}
-                    {liked || <Like>좋아요 {post.likeCount + addLike}개 </Like>} */}
+                  {/* 좋아요 {post.likeCount}개 */}
+                    {liked && <Like>좋아요 {post.likeCount + delliked}개 </Like>}
+                    {liked || <Like>좋아요 {post.likeCount + addliked}개 </Like>}
                 </LikeArea>
 
                 {/* 콘텐츠 내용 */}
