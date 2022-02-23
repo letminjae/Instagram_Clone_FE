@@ -23,12 +23,14 @@ const Direct = () => {
   useEffect(() => {
     apis.getUser()
         .then(function (response){
-            console.log(response)
-            // setUserList(response.data)
+            setUserList(response.data)
         }).catch(function (error){
             console.log(error)
         })
     }, [])
+
+  const userInfo = userlist.map((u,i) => u.nickname)
+  const admin = userInfo[2]
 
   const dispatch = useDispatch();
   const scrollRef = useRef();

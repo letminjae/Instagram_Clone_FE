@@ -69,7 +69,7 @@ export const apis = {
   chatRoomDelete: (roomId) => api.delete(`/chat/room/${roomId}`),
 
   //유저 정보 불러오기
-  getUser : () => api.get("api/users"),
+  getUser : () => api.get("/api/users"),
 
 };
 

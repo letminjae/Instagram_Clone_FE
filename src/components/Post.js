@@ -24,8 +24,6 @@ export default function Post(props) {
     const liked = post.liked;
     const createdAt = post.createdAt.split("T")[1].split(":")[0];
 
-    console.log(liked)
-
     //디스패치
     const dispatch = useDispatch();
 
@@ -51,7 +49,7 @@ export default function Post(props) {
 
       if (ok) {
           dispatch(delPostDB(postId))
-          history.replace('/')
+          document.location.reload('/')
       } else {
           return;
       }

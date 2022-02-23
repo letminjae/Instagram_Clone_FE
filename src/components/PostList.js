@@ -6,6 +6,7 @@ import Post from "./Post";
 
 const PostList = () => {
     const [post_list, setPostList] = useState([]);
+    // const data = useSelector((state) => state.post.list)
     const likeList = useSelector((state) => state.post.likeList)
     
     useEffect(() => {
@@ -30,12 +31,12 @@ const PostList = () => {
                     const content = p.content;
                     const createdAt = p.createdAt;
 
-                    let liked = false;
-                    for (let i = 0; i < likeList.length; i++) {
-                        if(likeList[i] === postId) {
-                            liked = true;
-                        }
-                    }
+                    // let liked = false;
+                    // for (let i = 0; i < likeList.length; i++) {
+                    //     if(likeList[i] === postId) {
+                    //         liked = true;
+                    //     }
+                    // }
 
                     return (
                         <Post

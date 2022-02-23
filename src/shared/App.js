@@ -20,6 +20,7 @@ function App() {
   React.useEffect(() => {
     if (document.cookie) {
       // dispatch(loginActions.loginCheckDB());
+      // dispatch(setPostDB())
     }
   }, []);
 

@@ -68,6 +68,7 @@ const Header = () => {
             setUploadURL([]);
             setContent("");
             dispatch(addPostDB(data));
+            document.location.reload('/')
         });
     };
 
