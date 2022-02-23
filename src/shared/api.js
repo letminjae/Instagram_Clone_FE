@@ -72,6 +72,15 @@ export const apis = {
   getUser : () => api.get("/api/users"),
 
 
+  //댓글
+  getComment: (postId) => api.get(`/api/comment/${postId}`, {}),
+
+  addComment: (postId, content) =>
+    api.post(`/api/comment/${postId}`, { content }),
+
+  deleteComment: (commentId) =>
+    api.delete(`/api/comment/${commentId}`, {}),
+
   //채팅
   //채팅방 생성(유저아이디를 누르면 됨)
   chatRoom: (userId) => api.post(`api/chat/room/${userId}`, {}),

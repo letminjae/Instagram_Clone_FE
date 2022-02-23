@@ -190,7 +190,7 @@ const Direct = () => {
                       src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
                       alt="박보검" />
                     <Name>
-                      <NickName>박재균</NickName>
+                      <NickName>해당페이지는 미구현입니다 ㅠㅠ</NickName>
                     </Name>
                   </SendUserProfile>
 
@@ -207,7 +207,7 @@ const Direct = () => {
                     src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
                     alt="박보검" />
                   <Name>
-                    <NickName style={{ margin: "0px 440px 10px 0px", }}>박재균</NickName>
+                    <NickName style={{ margin: "0px 440px 10px 0px", }}>anonymous</NickName>
                   </Name>
                   <HiOutlineInformationCircle style={{ fontSize: "28px" }} />
                 </UserInfoContainer>

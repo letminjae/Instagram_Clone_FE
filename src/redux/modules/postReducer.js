@@ -25,23 +25,27 @@ const delPost = createAction(DEL_POST, (postId) => ({ postId }))
 export const setPostDB = () => {
     return function (dispatch, getState, { history }) {
         apis.getPost()
-            .then(function (response){
-                const _postList = response.data
-                _postList.map((post,i) => {
-                    console.log(post)
-                    dispatch((setPost(post)))
-                })
-            })
+        .then((res) => {
+            dispatch(setPost(res.data))
+            // dispatch(setPost(res.data))
+        })
+        // dispatch(setPost(data))
+            // .then(function (response){
+            //     const _postList = response.data
+            //     _postList.map((post,i) => {
+            //         console.log(post)
+            //         dispatch((setPost(post)))
+            //     })
+            // })
         
-        // dispatch(setPost(data.data))
     }
 }
 
 export const addPostDB = (data) => {
     return function (dispatch, getState, { history }) {
+        // 여기서 api통신(add하는 api url로) 한 후에 dispatch한다!!
         dispatch(addPost(data));
         dispatch(setPostDB());
-        history.replace('/')
     }
 }
 
@@ -78,7 +82,7 @@ export default handleActions({
         }
     },
     [ADD_POST]: (state, action) => produce(state, (draft) => {
-        draft.list.unshift(action.payload.post);
+        draft.list.unshift(action.payload.postData);
     }),
     [DEL_POST]: (state, action) => produce(state, (draft) => {
         draft.list.filter((list) => list.id !== action.payload.postId)
