@@ -33,37 +33,6 @@ const MyPost = (props) => {
     }
   }, []);
 
-  //mypage 로드 되자마자 불러오기
-  //   React.useEffect(() => {
-  //     apis.getPost().then(function (res) {
-  //       console.log(res.data);
-  //       const post_list = res.data;
-  //       console.log(post_list);
-  //       console.log(userinfo);
-  //       post_list.map((post, i) => {
-  //         console.log(post);
-  //         console.log(userinfo);
-  //         if (userinfo.nickname == post.nickname) {
-  //           console.log(post.uid);
-  //           dispatch(setPostList(post.uid));
-  //         }
-  // dispatch(mypageActions.myPostDB(post.uid));
-  // return null
-  // console.log(post.nickname);
-  // console.log(i);
-  // dispatch(setPostList(post));
-  //   });
-
-  //   console.log(post_list);
-  // setPostList(response.data)
-  // });
-  // apis.getMyPost().catch(function (error) {
-  //   console.log(error);
-  // });
-
-  // dispatch(mypageActions.getPostDB());
-  // dispatch(mypageActions.myPostDB(userId));
-  //   }, []);
   return (
     <React.Fragment>
       {userinfo.nickname === props.nickname ? (

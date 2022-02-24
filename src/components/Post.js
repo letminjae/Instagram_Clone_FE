@@ -1,29 +1,30 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
+import { history } from '../redux/configureStore'
+import { useDispatch } from "react-redux";
 
 import Modal from "./Modal";
+import CommentDetail from "./CommentDetail";
 
 import { BsThreeDots } from "react-icons/bs";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineClose, AiOutlineHeart } from "react-icons/ai";
 import { IoMdPaperPlane } from "react-icons/io";
 import { BsChat } from "react-icons/bs";
 import { RiBookmarkLine } from "react-icons/ri";
 import { CgSmile } from "react-icons/cg";
+
 import { addLikeDB } from "../redux/modules/likeReducer";
 import { delPostDB } from "../redux/modules/postReducer";
-import { actionCreators as commentActions } from "../redux/modules/commentReducer";
-import { actionCreators as userActions } from "../redux/modules/userReducer";
-import User from "../redux/modules/userReducer";
+import { addCommentDB } from "../redux/modules/commentReducer";
+import { apis } from "../shared/api";
+
 export default function Post(props) {
   //props 값
-  console.log(props);
   const post = props;
-  const postId = post.postId;
-  const imageUrl = post.imageUrl;
+  const postId = post.postId
+  const imageUrl = post.imageUrl
   const liked = post.liked;
-  const createdAt = post.createdAt.split("T")[1].split(":")[0];
+  const createdAt = post.createdAt?.split("T")[0]
 
   //디스패치
   const dispatch = useDispatch();
@@ -33,47 +34,39 @@ export default function Post(props) {
   const [addliked, setAddLiked] = useState(0);
   const [delliked, setDelLiked] = useState(0);
 
-  // 댓글
-  const [commentList, setCommentList] = useState([]);
-  const user = useSelector((state) => state.user);
-  const userinfo = useSelector((state) => state.user.userinfo);
-  const comment = useSelector((state) => state.comment);
-  const comment_list = useSelector((state) => state.comment.list);
-
-  // console.log(props);
-  // console.log(user);
-  // console.log(userinfo);
-  // console.log(comment);
-  // console.log(comment_list);
-
-  const [hasComment, setHasComment] = useState("");
-
-  //포스트 헤더의 더보기
-  const [moreInfo, setMoreInfo] = useState(false);
-
+  //댓글
+  const [hasComment, setHasComment] = useState("")
+  const [commentShow, setCommentShow] = useState(false);
+  const [commentModal, setCommentModal] = useState(false);
+  
+  const addComment = (postId) => {
+    let comment = document.querySelector("#comment");
+    comment.value = "";
+    console.log(comment);
+    dispatch(addCommentDB(postId, hasComment));
+  };
+  
   //댓글 밸류값
   const changeComment = (e) => {
     setHasComment(e.target.value);
-  };
+  }
 
-  //댓글 추가 및 상태값 유지
-  const clickComment = () => {
-    dispatch(commentActions.addCommentDB(postId, hasComment));
-  };
-  React.useEffect(() => {
-    dispatch(commentActions.getCommentDB());
-  }, []);
-  // React.useEffect(() => {
-  //   dispatch(setCommentList);
-  // }, []);
+  // 게시물 내용 더보기
+  const [contentMore, setContentMore] = useState(false);
+  
+  //포스트 헤더의 더보기
+  const [moreInfo, setMoreInfo] = useState(false)
+
   //포스트 삭제
   const deletePost = () => {
-    alert("정말 삭제하시겠습니까?").then((response) => {
-      console.log("삭제 완료");
-      dispatch(delPostDB(postId));
+    const ok = window.confirm("정말로 삭제하시겠어요?")
+
+    if (ok) {
+      dispatch(delPostDB(postId))
       setMoreInfo(false);
-    });
-  };
+      alert("삭제 완료!");
+    }
+  }
 
   //좋아요 추가
   const addLike = () => {
@@ -89,7 +82,7 @@ export default function Post(props) {
     setAddLiked(0);
     setDelLiked(-1);
     addLikeDB(postId);
-  };
+  }
 
   return (
     <Wrap>
@@ -122,7 +115,9 @@ export default function Post(props) {
         <ModalArea style={{ color: "red", fontWeight: "900" }}>
           팔로우
         </ModalArea>
-        <ModalArea>게시물로 이동</ModalArea>
+        <ModalArea>
+          게시물로 이동
+        </ModalArea>
         <ModalArea>공유 대상...</ModalArea>
         <ModalArea>링크 복사</ModalArea>
         <ModalArea>퍼가기</ModalArea>
@@ -136,12 +131,13 @@ export default function Post(props) {
 
       {/* 중간의 이미지 */}
       <PostCenter>
-        <PostMainImg src={imageUrl} />
+        <PostMainImg src={imageUrl} alt="postImage" />
       </PostCenter>
 
       {/* 푸터 : 좋아요 기능, 댓글, 디엠 기능, 북마크(보류), 내용 */}
       <PostFooter>
         <FooterMenu>
+
           {/* 온클릭 이벤트 : 좋아요 누르면 채워진 하트, 좋아요 취소하면 비워진 하트 기능*/}
           {(like && (
             <AiFillHeart
@@ -151,24 +147,18 @@ export default function Post(props) {
               color="red"
             />
           )) || (
-            <AiOutlineHeart
-              size="28"
-              style={{ margin: "8px" }}
-              onClick={addLike}
-            />
-          )}
+              <AiOutlineHeart
+                size="28"
+                style={{ margin: "8px" }}
+                onClick={addLike}
+              />
+            )}
 
           {/* 댓글 */}
           <BsChat size="28" style={{ margin: "8px" }} />
 
           {/* 디엠 */}
-          <IoMdPaperPlane
-            size="28"
-            style={{ margin: "8px" }}
-            onClick={() => {
-              history.push("/direct");
-            }}
-          />
+          <IoMdPaperPlane size="28" style={{ margin: "8px" }} onClick={() => { history.push('/direct') }} />
 
           {/* 북마크 */}
           <RiBookmarkLine
@@ -183,205 +173,306 @@ export default function Post(props) {
 
         {/* 좋아요 몇개인지 기능 해야됨 */}
         <LikeArea>
-          좋아요 {post.likeCount}개
-          {/* {liked && <Like>좋아요 {post.likeCount + delLike}개 </Like>}
-                    {liked || <Like>좋아요 {post.likeCount + addLike}개 </Like>} */}
+          {/* 좋아요 {post.likeCount}개 */}
+          {liked && <Like>좋아요 {post.likeCount + delliked}개 </Like>}
+          {liked || <Like>좋아요 {post.likeCount + addliked}개 </Like>}
         </LikeArea>
 
         {/* 콘텐츠 내용 */}
         <PostContent>
           <Username>{post.nickname}</Username>
-          <ContentMore>
-            <Content>{post.content}</Content>
-          </ContentMore>
-        </PostContent>
 
-        {/* 댓글 모두 보기 (추후 기능) */}
-        <CommentsShow>댓글 {post.commentCount}개 모두 보기</CommentsShow>
-        {/* 댓글리스트 */}
-        {comment_list.map((item, index) => {
-          // console.log(item);
-          // console.log(index);
-          return (
-            <div key={index}>
-              <div>{userinfo.nickname}</div>
-              <div>{item.comment}</div>
+
+
+          {contentMore && (
+            <>
+          <ContentMore onClick={() => setContentMore(false) }>
+              <span
+                  style={{
+                    color: "#999",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    paddingLeft: "10px",
+                  }}
+                >
+                  내용 접기
+                  </span>
+          </ContentMore>
+          </>
+          )}
+          {contentMore || (
+            <>
+              <ContentTitle>{post.content?.split("\n")[0]}</ContentTitle>
+              <ContentMore onClick={() => setContentMore(true)}>
+              <span>... </span>
+                <span
+                  style={{
+                    color: "#999",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}
+                >
+                  더 보기
+                </span>
+              </ContentMore>
+            </>
+          )}
+        </PostContent>
+        {contentMore && (
+          <>
+            <Content>
+              {post.content.split("\n").map((content, index) => {
+                return <div key={index}>{content}</div>;
+              })}
+            </Content>
+          </>
+        )}
+
+        {/* 댓글 모두 보기 */}
+        {post.commentCount > 0 && (
+          <CommentsShow
+            onClick={() => {
+              setCommentShow(true);
+              setCommentModal(true);
+            }}
+          >
+            댓글 {post.commentCount}개 모두 보기
+          </CommentsShow>
+        )}
+        {commentModal && (
+          <>
+            <CommentDetail
+              visible={commentModal}
+              postId={postId}
+              imgUrl={imageUrl}
+              postUsername={post.nickname}
+              // postUserImg={post.profileUrl}
+              postContent={post.content}
+              postCreatedAt={createdAt}
+              postLikeCount={post.likeCount}
+              liked={liked}
+              like={like}
+              />
+              <ClosePosting
+              onClick={() => {
+                setCommentModal(false);
+                setCommentShow(false);
+              }}
+            >
+              <AiOutlineClose size="30" color="#fff" />
+            </ClosePosting>
+          </>
+        )}
+
+        {commentShow && (
+          <>
+            <CommentsShow onClick={() => setCommentShow(false)}>
+              댓글 접기
+            </CommentsShow>
+            <div style={{ display: "flex" }}>
+              <Username style={{ padding: "0 6px 0 16px" }}>username</Username>
+              <Comments>댓글입니다!!</Comments>
             </div>
-          );
-        })}
+          </>
+        )}
+    
+
         {/* 시간 */}
-        <ModifiedAt>{createdAt}시간 전</ModifiedAt>
+        <ModifiedAt>{createdAt}</ModifiedAt>
 
         {/* 댓글 작성 기능*/}
         <WriteComment>
           <CgSmile size="28" style={{ margin: "0 16px", cursor: "pointer" }} />
-          <Message placeholder="댓글 달기..." onChange={changeComment} />
+          <Message
+            placeholder="댓글 달기..."
+            onChange={changeComment}
+            id="comment"
+          />
           {/* 코멘트 작성버튼 */}
-          <Commenting onClick={clickComment}>게시</Commenting>
+          {hasComment !== "" ? (
+            <Commenting onClick={() => addComment(postId)}>게시</Commenting>
+          ) : (
+            <Commenting style={{ opacity: "0.3", pointerEvents: "none" }}>
+              게시
+            </Commenting>
+          )}
         </WriteComment>
       </PostFooter>
     </Wrap>
-  );
+  )
 }
 
 const Wrap = styled.div`
-  border: 1px solid #ddd;
-  width: 636px;
-  background-color: #fff;
-  margin-bottom: 25px;
-  @media screen and (max-width: 920px) {
-    margin: auto;
-    margin-bottom: 24px;
-    width: 95%;
-    overflow: scroll;
-  }
-`;
+    border: 1px solid #ddd;
+    width: 636px;
+    background-color: #fff;
+    margin-bottom: 25px;
+    @media screen and (max-width: 920px) {
+      margin: auto;
+      margin-bottom: 24px;
+      width: 95%;
+      overflow: scroll;
+    }
+  `;
 
 const PostHeader = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-`;
+    height: 60px;
+    display: flex;
+    align-items: center;
+  `;
 
 const HeaderLeft = styled.div`
-  width: 566px;
-  display: flex;
-  align-items: center;
-`;
+    width: 566px;
+    display: flex;
+    align-items: center;
+  `;
 
 const PostTitleImgArea = styled.div`
-  width: 45px;
-  height: 45px;
-  border: 2px solid transparent;
-  border-radius: 100%;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  margin: 16px 4px 16px 16px;
-  cursor: pointer;
-`;
+    width: 45px;
+    height: 45px;
+    border: 2px solid transparent;
+    border-radius: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 16px 4px 16px 16px;
+    cursor: pointer;
+  `;
 
 const PostTitleImg = styled.img`
-  width: 32px;
-  height: 32px;
-  border-radius: 100%;
-`;
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+  `;
 
 const PostTitle = styled.div`
-  font-weight: bold;
-  margin: 0px 0px 5px 0px;
-  cursor: pointer;
-  &:hover {
-    text-decoration: none;
-  }
-`;
+    font-weight: bold;
+    margin : 0px 0px 5px 0px;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+    }
+  `;
+
+const ContentTitle = styled.span``;
 
 const PostMenu = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin: auto;
-  padding-right: 8px;
-  cursor: pointer;
-`;
+    display: flex;
+    justify-content: flex-end;
+    margin: auto;
+    padding-right: 8px;
+    cursor: pointer;
+  `;
 
 const MenuArea = styled.div`
-  padding: 8px;
-`;
+    padding: 8px;
+  `;
 
 const PostCenter = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `;
 
 const PostMainImg = styled.img`
-  width: 100%;
-  @media screen and (max-width: 920px) {
     width: 100%;
-  }
+    @media screen and (max-width: 920px) {
+      width: 100%;
+    }
+  `;
+
+const ClosePosting = styled.div`
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+  z-index: 9999;
+`;
+
+const Comments = styled.div`
 `;
 
 const PostFooter = styled.div``;
 
 const FooterMenu = styled.div`
-  padding: 8px;
-  position: relative;
-`;
+    padding: 8px;
+    position: relative;
+  `;
 
 const LikeArea = styled.div`
-  font-weight: bold;
-  padding: 0 16px 10px;
-`;
+    font-weight: bold;
+    padding: 0 16px 10px;
+  `;
 
 const Like = styled.span`
-  cursor: pointer;
-`;
+    cursor: pointer;
+  `;
 
 const PostContent = styled.div`
-  padding: 0 16px;
-  display: flex;
-`;
+    padding: 0 16px;
+    display: flex;
+  `;
 
 const Username = styled.div`
-  font-weight: bold;
-  padding-right: 6px;
-  &:hover {
-    text-decoration: none;
-  }
-`;
+    font-weight: bold;
+    padding-right: 6px;
+    &:hover {
+      text-decoration: none;
+    }
+  `;
 
 const Content = styled.div`
-  padding: 3px 8px 15px;
-  line-height: 1.2;
-`;
+    padding: 3px 8px 15px 15px;
+    line-height: 1.2;
+  `;
 
 const ContentMore = styled.div``;
 
 const CommentsShow = styled.div`
-  color: #999;
-  padding: 6px 16px;
-  cursor: pointer;
-`;
+    color: #999;
+    padding: 6px 16px;
+    cursor: pointer;
+  `;
 
 const ModifiedAt = styled.div`
-  font-size: 10px;
-  color: #999;
-  padding: 10px 16px 20px;
-  border-bottom: 1px solid #ddd;
-`;
+    font-size: 10px;
+    color: #999;
+    padding: 10px 16px 20px;
+    border-bottom: 1px solid #ddd;
+  `;
 
 const WriteComment = styled.div`
-  height: 53px;
-  display: flex;
-  align-items: center;
-`;
+    height: 53px;
+    display: flex;
+    align-items: center;
+  `;
 
 const Message = styled.textarea`
-  width: 500px;
-  // max-height: 60px;
-  outline: none;
-  border: 0;
-  font-size: 14px;
-  resize: none;
-  flex-direction: column;
-  word-wrap: break-word;
-  margin: 16px 0px 0px 0px;
-`;
+    width: 500px;
+    // max-height: 60px;
+    outline: none;
+    border: 0;
+    font-size: 14px;
+    resize: none;
+    flex-direction: column;
+    word-wrap: break-word;
+    margin: 16px 0px 0px 0px;
+  `;
 
 const Commenting = styled.div`
-  width: 40px;
-  color: #4368ff;
-  cursor: pointer;
-`;
+    width: 40px;
+    color: #4368FF;
+    cursor: pointer;
+  `;
 
 const ModalArea = styled.div`
-  height: 48px;
-  border-bottom: 1px solid #999;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-size: 14px;
-`;
+    height: 48px;
+    border-bottom: 1px solid #999;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+  `;

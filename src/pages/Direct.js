@@ -1,35 +1,56 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+
 import { chatCreators as chatActions } from "../redux/modules/dmReducer";
 
 import Header from "../components/Header";
+import { TimeFormat } from "../shared/TimeData";
 
 import { FiEdit } from "react-icons/fi";
 import { HiOutlineInformationCircle } from "react-icons/hi"
 
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs';
+import { apis } from "../shared/api";
 
 
 const Direct = () => {
+
+  // const [userlist, setUserList] = useState([]);
+
+  // useEffect(() => {
+  //   apis.getUser()
+  //     .then(function (response) {
+  //       setUserList(response.data)
+  //     }).catch(function (error) {
+  //       console.log(error)
+  //     })
+  // }, [])
+
+  // console.log(userlist.map((p,i) => p.nickname))
+
+  // const userInfo = userlist.map((u,i) => u.nickname)
+  // console.log(userInfo)
 
   const dispatch = useDispatch();
   const scrollRef = useRef();
 
   //경로
   const params = useParams();
-  const roomId = params.roomId;
+  const userId = params.userId;
+  // console.log(userId)
   const roomName = params.roomName;
 
   //redux 데이터
-  const datas = useSelector((state) => state.chat.chatList);
-  const roomInfoList = useSelector((state) => state.chat.roomInfoList);
+  const datas = useSelector((state) => state.dm.chatList);
+  const roomInfoList = useSelector((state) => state.dm.roomInfoList);
 
   //토큰
-  const accessToken = document.cookie.split("=")[1];
-  const token = { Authorization: `${accessToken}` };
+  const accesstoken = document.cookie.split("=")[1];
+  const token = { Authorization: `${accesstoken}` };
 
   // useState관리
   const [message, setMessage] = useState(""); // 메시지 내용 상태관리
@@ -54,27 +75,28 @@ const Direct = () => {
     }
   };
 
-  //메세지 보내면 스크롤 자동내림
-  const scrollMoveBottom = () => {
-    scrollRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-    });
-  };
+
+  // 메세지 보내면 스크롤 자동내림
+  // const scrollMoveBottom = () => {
+  //   scrollRef.current.scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "end",
+  //     inline: "nearest",
+  //   });
+  // };
 
   useEffect(() => {
     //소켓 연결
     const sock =
-      new SockJS("https://seongeunyang.shop/ws-stomp");
+      new SockJS("http://13.125.107.22:8080/ws-stomp");
 
     setStomp(Stomp.over(sock));
-    dispatch(chatActions.getRoomInfoDB(roomId)); //방정보 가져오기
-    dispatch(chatActions.getContentChatDB(roomId)); //대화내용 가져오기
+    // dispatch(chatActions.getRoomInfoDB(roomId)); //방정보 가져오기
+    // dispatch(chatActions.getContentChatDB(roomId)); //대화내용 가져오기
   }, []);
 
   useEffect(() => {
-    scrollMoveBottom();
+    // scrollMoveBottom();
     chatConnect(); //채팅룸 연결
 
     return () => {
@@ -87,7 +109,7 @@ const Direct = () => {
   useEffect(() => {
     setMessageList(datas);
     setTimeout(() => {
-      scrollMoveBottom(); //스크롤 다운
+      // scrollMoveBottom(); //스크롤 다운
     }, 100);
   }, [datas]);
 
@@ -97,17 +119,19 @@ const Direct = () => {
       stomp.debug = null;
       stomp.connect(token, () => {
         stomp.subscribe(
-          // `/sub/api/chat/room/${roomId}`,
-          `/chatroom/api/chat/room`,
+          // `/sub/api/chat/room/${userId}`,
+          `/sub/api/chat/room`,
           (message) => {
-            const responseData = JSON.parse(message.body); 
+            const responseData = JSON.parse(message.body);
+            console.log(responseData)
             messageDatas(responseData);
           },
           token
         );
       });
-    } catch (err) {}
+    } catch (err) { }
   };
+
 
   // stomp 연결해제
   const chatDisconnect = () => {
@@ -116,7 +140,7 @@ const Direct = () => {
       stomp.disconnect(() => {
         stomp.unsubscribe("sub-0");
       }, token);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   //메세지 보내기
@@ -128,134 +152,134 @@ const Direct = () => {
         message: message,
       };
       stomp.debug = null;
-      await stomp.send("/chat/message", token, JSON.stringify(datas)); // 메세지를 담고있는것, chat/message로 보낸다
-      scrollMoveBottom(); //스크롤 다운
+      await stomp.send("pub/chat/message", token, JSON.stringify(datas)); // 메세지를 담고있는것, chat/message로 보낸다
+      // scrollMoveBottom(); //스크롤 다운
       setMessage("");
     }
   };
 
 
 
-    return (
-        <React.Fragment>
 
-            {/* 헤더 */}
-            <Header />
-            <Wrap>
 
-                {/* 디엠창 */}
-                <Messages>
-                    <MessageContainer>
-                        <SideMenu>
-                            {/* 사이드 작성칸 */}
-                            <Mine>
-                                <select name="" id="">
-                                    <option value="" >닉네임</option>
-                                </select>
-                                <FiEdit
-                                    style={{ fontSize: '24px', cursor: 'pointer', margin: '16px 0px 0px 10px' }}
-                                />
-                            </Mine>
-                            {/* 사이드 유저 정보 */}
-                            <SendUser>
-                                <SendUserProfile>
-                                    <OtherImage
-                                        src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
-                                        alt="박보검" />
-                                    <Name>
-                                        <NickName>박재균</NickName>
-                                    </Name>
-                                </SendUserProfile>
+  return (
+    <React.Fragment>
 
-                                <SendUserProfile>
-                                    <OtherImage
-                                        src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
-                                        alt="박보검" />
-                                    <Name>
-                                        <NickName>박재균</NickName>
-                                    </Name>
-                                </SendUserProfile>
+      {/* 헤더 */}
+      <Header />
+      <Wrap>
 
-                                <SendUserProfile>
-                                    <OtherImage
-                                        src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
-                                        alt="박보검" />
-                                    <Name>
-                                        <NickName>박재균</NickName>
-                                    </Name>
-                                </SendUserProfile>
+        {/* 디엠창 */}
+        <Messages>
+          <MessageContainer>
+            <SideMenu>
+              {/* 사이드 작성칸 */}
+              <Mine>
+                <select name="" id="">
+                  <option value="" >닉네임</option>
+                </select>
+                <FiEdit
+                  style={{ fontSize: '24px', cursor: 'pointer', margin: '16px 0px 0px 10px' }}
+                />
+              </Mine>
+              {/* 사이드 유저 정보 */}
+              <SendUser>
 
-                            </SendUser>
-                        </SideMenu>
+                  <SendUserProfile onClick={() => {}}>
+                    <OtherImage
+                      src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
+                      alt="박보검" />
+                    <Name>
+                      <NickName>해당페이지는 미구현입니다 ㅠㅠ</NickName>
+                    </Name>
+                  </SendUserProfile>
 
-                        {/* DM 보내는 창 */}
-                        <SendMessageBoxs>
-                            <SendMessageContainer>
+              </SendUser>
+            </SideMenu>
 
-                                {/* DM 보낼 유저 이름 */}
-                                <UserInfoContainer>
-                                    <OtherImage
-                                        src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
-                                        alt="박보검" />
-                                    <Name>
-                                        <NickName style={{margin : "0px 440px 10px 0px", }}>박재균</NickName>
-                                    </Name>
-                                    <HiOutlineInformationCircle style={{fontSize : "28px"}}/>
-                                </UserInfoContainer>
+            {/* DM 보내는 창 */}
+            <SendMessageBoxs>
+              <SendMessageContainer>
 
-                                {/* DM 내용 */}
-                                <ScrollContainer onScroll={null}>
-                                    {/* {messageData?.map((item, index) => {
-                                        const { created_at, message } = item;
-                                        return (
-                                            <>
-                                                <ContentsContainer key={index}>
-                                                    <MessageList>
-                                                        {item.user_account === user_account ? (
-                                                            <PostUserContainer>
-                                                                <p>{TimeFormat(created_at)}</p>
-                                                                <PostUser need={message.length > 20}>
-                                                                    <Span>{message}</Span>
-                                                                </PostUser>
-                                                            </PostUserContainer>
-                                                        ) : (
-                                                            <SendUserContainer>
-                                                                <SendDMUser need={message.length > 20}>
-                                                                    <Span>{message}</Span>
-                                                                </SendDMUser>
-                                                                <p>{TimeFormat(created_at)}</p>
-                                                            </SendUserContainer>
-                                                        )}
-                                                    </MessageList>
-                                                </ContentsContainer>
-                                            </>
-                                        );
-                                    })}
-                                    <div ref={messagesEndRef} /> */}
-                                </ScrollContainer>
+                {/* DM 보낼 유저 이름 */}
+                <UserInfoContainer>
+                  <OtherImage
+                    src="https://pbs.twimg.com/profile_images/799445590614495232/ii6eBROd_400x400.jpg"
+                    alt="박보검" />
+                  <Name>
+                    <NickName style={{ margin: "0px 440px 10px 0px", }}>anonymous</NickName>
+                  </Name>
+                  <HiOutlineInformationCircle style={{ fontSize: "28px" }} />
+                </UserInfoContainer>
 
-                                {/* DM 보내는 작성 칸 */}
-                                <InputForm>
-                                    <Input
-                                        name="message"
-                                        value={null}
-                                        onChange={null}
-                                        onKeyPress={null}
-                                        placeholder="메시지 입력..."
-                                    />
-                                    <P type={null} onClick={() => {}}>
-                                        메시지보내기
-                                    </P>
-                                </InputForm>
-                            </SendMessageContainer>
-                        </SendMessageBoxs>
+                {/* DM 내용 */}
+                <ScrollContainer>
+                  {messageList.map((item, index) => {
+                    const { message, status } = item;
+                    return (
+                      <>
+                        <ContentsContainer key={index}>
+                          <MessageList>
 
-                    </MessageContainer>
-                </Messages>
-            </Wrap>
 
-        </React.Fragment>
-    )
+                            <SendUserContainer>
+                              <SendDMUser need={message.length > 20}>
+                                <Span>{message}</Span>
+                              </SendDMUser>
+                              {/* <p>{TimeFormat(created_At)}</p> */}
+                            </SendUserContainer>
+                                                
+                                                        
+                          </MessageList>
+                        </ContentsContainer>
+                        {/* <ContentsContainer key={index}> */}
+                        {/* <MessageList> */}
+                        {/* {message === message ? (  */}
+                        {/* <PostUserContainer> */}
+                        {/* <p>{TimeFormat(created_At)}</p> */}
+                        {/* <PostUser need={message.length > 20}> */}
+                        {/* <Span>{message}</Span> */}
+                        {/* </PostUser> */}
+                        {/* </PostUserContainer> */}
+                        {/* ) :  */}
+                        {/* ( */}
+                        {/* <SendUserContainer> */}
+                        {/* <SendDMUser need={message.length > 20}> */}
+                        {/* <Span>{message}</Span> */}
+                        {/* </SendDMUser> */}
+                        {/* <p>{TimeFormat(created_At)}</p> */}
+                        {/* </SendUserContainer> */}
+                        {/* ) */}
+                        {/* } */}
+                        {/* </MessageList> */}
+                        {/* </ContentsContainer> */}
+                      </>
+                    );
+                  })}
+                  {/* <div ref={messagesEndRef} /> */}
+                </ScrollContainer>
+
+                {/* DM 보내는 작성 칸 */}
+                <InputForm>
+                  <Input
+                    value={message}
+                    onChange={messageChat}
+                    onKeyPress={onKeyPress}
+                    placeholder="메시지 입력..."
+                  />
+                  <P onClick={sendMessage}>
+                    메시지보내기
+                  </P>
+                </InputForm>
+              </SendMessageContainer>
+            </SendMessageBoxs>
+
+          </MessageContainer>
+        </Messages>
+      </Wrap>
+
+    </React.Fragment>
+  )
 }
 
 const Wrap = styled.div`

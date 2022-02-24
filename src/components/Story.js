@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom'
 import styled from 'styled-components';
-import Text from '../elements/Text'
 
 export default function Story() {
     return (
@@ -17,29 +15,21 @@ export default function Story() {
             <ImgArea>
                 <ProfileImage>
                     <Img
-                        src="https://avatars.githubusercontent.com/u/96935557?v=4"
+                        src="https://img1.daumcdn.net/thumb/R300x0/?fname=https://k.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg"
                         alt="letminjae"
                     />
                 </ProfileImage>
-                <ProfileText>letminjae</ProfileText>
+                <ProfileText>hahahaha</ProfileText>
             </ImgArea>
+            
             <ImgArea>
                 <ProfileImage>
                     <Img
-                        src="https://avatars.githubusercontent.com/u/96935557?v=4"
-                        alt="letminjae"
+                        src="https://media.vlpt.us/images/wowba/post/25b44f82-1a1c-482e-bab7-3fe7bc04fa2a/image.png?w=768"
+                        alt="hanghae99"
                     />
                 </ProfileImage>
-                <ProfileText>letminjae</ProfileText>
-            </ImgArea>
-            <ImgArea>
-                <ProfileImage>
-                    <Img
-                        src="https://avatars.githubusercontent.com/u/96935557?v=4"
-                        alt="letminjae"
-                    />
-                </ProfileImage>
-                <ProfileText>letminjae</ProfileText>
+                <ProfileText>hanghae99</ProfileText>
             </ImgArea>
         </Wrap>
     )

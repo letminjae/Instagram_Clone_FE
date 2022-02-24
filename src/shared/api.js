@@ -2,7 +2,6 @@ import axios from "axios";
 
 const tokencheck = document.cookie;
 const token = tokencheck.split("=")[1];
-console.log(token);
 const api = axios.create({
   // 실제 베이스 유알엘
   baseURL: "http://13.125.107.22:8080",
@@ -69,16 +68,43 @@ export const apis = {
 
   chatRoomDelete: (roomId) => api.delete(`/chat/room/${roomId}`),
 
-  //코멘트 추가,삭제,불러오기
-  addComment: (postId, content) =>
-    api.post(`/api/comment/${postId}`, { postId: postId, content: content }),
-  delComment: (commentId) => api.delete(`/api/comment/${commentId}`),
-  getComments: (postId) => api.get(`/api/post`),
+  //유저 정보 불러오기
+  getUser : () => api.get("/api/users"),
 
-  //마이페이지 게시글 조회 및 프로필 편집
+
+  //댓글
+  getComment: (postId) => api.get(`/api/comment/${postId}`, {}),
+
+  addComment: (postId, content) =>
+    api.post(`/api/comment/${postId}`, { content }),
+
+  deleteComment: (commentId) =>
+    api.delete(`/api/comment/${commentId}`, {}),
+     
+  //마이페이지 게시글 조회
   getMyPost: (userId) => api.get(`/user/mypage/${userId}`, { userId: userId }),
 };
 
+  //채팅
+  //채팅방 생성(유저아이디를 누르면 됨)
+  chatRoom: (userId) => api.post(`api/chat/room/${userId}`, {}),
+
+  //내가 참여한 전체 채팅방 조회
+  chatRoomList: () => api.get(`api/chat/rooms`, {}),
+
+  //특정 방에서 쓴 메시지 내용 가져오기
+  chatMSG: (roomId) => api.get(`api/chat/message/${roomId}`),
+
+  //특정 한 채팅방 정보조회
+  chatOneRoom: (roomId) => api.get(`api/chat/room/${roomId}`),
+
+  //채팅방 나가기
+  chatRoomDelete: (roomId) => api.delete(`api/chat/room/${roomId}`),
+
+};
+
+
+
 export const apisMultipart = {
-  addPost: (formdata) => apiMultipart.post("/api/post", { formdata }),
+  addPost: (formdata) => apiMultipart.post("/api/post", formdata),
 };
