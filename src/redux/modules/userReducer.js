@@ -30,19 +30,19 @@ const loginDB = (email, pwd) => {
       .then((res) => {
         setCookie("token", res.data.token, 1);
         const token = res.data.token;
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.token);
-        console.log(token);
+        // console.log(res);
+        // console.log(res.data);
+        // console.log(res.data.token);
+        // console.log(token);
         apis
           .userInfo(token)
           .then((res) => {
-            console.log(res.data);
-            console.log(res.data.data);
-            console.log(res.data.token);
-            console.log(res.data.data.email);
-            console.log(res.data.data.nickname);
-            console.log(token);
+            // console.log(res.data);
+            // console.log(res.data.data);
+            // console.log(res.data.token);
+            // console.log(res.data.data.email);
+            // console.log(res.data.data.nickname);
+            // console.log(token);
             dispatch(
               setUser({
                 email: res.data.data.email,
@@ -61,15 +61,24 @@ const loginDB = (email, pwd) => {
 
 const loginCheckDB = (user) => {
   return function (dispatch, getState, { history }) {
-    console.log(history);
-    dispatch(setUser(user));
-    history.psuh("/");
-    // const tokenCheck = document.cookie;
-    // if (tokenCheck) {
-    //   dispatch(setUser({ id: userId }));
-    // } else {
-    //   dispatch(logOut());
-    // }
+    const tokenCheck = document.cookie;
+    console.log(tokenCheck);
+    const token = tokenCheck.split("=")[1];
+    console.log(token);
+    if (token) {
+      apis
+        .userInfo(token)
+        .then((res) => {
+          dispatch(
+            setUser({
+              email: res.data.data.email,
+              nickname: res.data.data.nickname,
+              token: token,
+            })
+          );
+        })
+        .catch((error) => console.log(error));
+    }
   };
 };
 

@@ -68,6 +68,9 @@ export const apis = {
   chatRoomInfo: (roomId) => api.get(`/chat/room/${roomId}/carpool`),
 
   chatRoomDelete: (roomId) => api.delete(`/chat/room/${roomId}`),
+
+  //마이페이지 게시글 조회 및 프로필 편집
+  getMyPost: (userId) => api.get(`/user/mypage/${userId}`, { userId: userId }),
 };
 
 export const apisMultipart = {
