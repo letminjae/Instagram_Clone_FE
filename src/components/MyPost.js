@@ -1,27 +1,69 @@
 import React, { useEffect } from "react";
-
+import {
+  actionCreators,
+  actionCreators as loginActions,
+} from "../redux/modules/userReducer";
 import { actionCreators as mypageActions } from "../redux/modules/mypageReducer";
 
 import { Grid, Text, Button, IconButton, Image } from "../elements";
 
+import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-
+import { apis } from "../shared/api";
 const MyPost = (props) => {
   const dispatch = useDispatch();
+  const [post_list, setPostList] = React.useState([]);
+  const user = useSelector((state) => state.user);
   const userinfo = useSelector((state) => state.user.userinfo);
-
+  console.log(props);
+  console.log(userinfo.nickname);
+  console.log(props.nickname);
   const userId = props.userId;
   const mypost = useSelector((state) => state.mypage);
-
+  console.log(mypost);
+  console.log(mypost.list);
   const count = Object.keys(mypost).length;
-
+  console.log(count);
+  console.log(mypost.list.imageUrl);
+  console.log(userinfo.nickname === props.nickname);
   useEffect(() => {
     if (userinfo.nickname === props.nickname) {
       dispatch(mypageActions.myPostDB(userId));
     }
   }, []);
 
+  //mypage 로드 되자마자 불러오기
+  //   React.useEffect(() => {
+  //     apis.getPost().then(function (res) {
+  //       console.log(res.data);
+  //       const post_list = res.data;
+  //       console.log(post_list);
+  //       console.log(userinfo);
+  //       post_list.map((post, i) => {
+  //         console.log(post);
+  //         console.log(userinfo);
+  //         if (userinfo.nickname == post.nickname) {
+  //           console.log(post.uid);
+  //           dispatch(setPostList(post.uid));
+  //         }
+  // dispatch(mypageActions.myPostDB(post.uid));
+  // return null
+  // console.log(post.nickname);
+  // console.log(i);
+  // dispatch(setPostList(post));
+  //   });
+
+  //   console.log(post_list);
+  // setPostList(response.data)
+  // });
+  // apis.getMyPost().catch(function (error) {
+  //   console.log(error);
+  // });
+
+  // dispatch(mypageActions.getPostDB());
+  // dispatch(mypageActions.myPostDB(userId));
+  //   }, []);
   return (
     <React.Fragment>
       {userinfo.nickname === props.nickname ? (
@@ -43,4 +85,10 @@ const MyPost = (props) => {
   );
 };
 
+const Span = styled.span`
+  display: inline-block;
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+`;
 export default MyPost;

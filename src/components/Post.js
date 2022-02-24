@@ -40,6 +40,12 @@ export default function Post(props) {
   const comment = useSelector((state) => state.comment);
   const comment_list = useSelector((state) => state.comment.list);
 
+  // console.log(props);
+  // console.log(user);
+  // console.log(userinfo);
+  // console.log(comment);
+  // console.log(comment_list);
+
   const [hasComment, setHasComment] = useState("");
 
   //포스트 헤더의 더보기
@@ -57,7 +63,9 @@ export default function Post(props) {
   React.useEffect(() => {
     dispatch(commentActions.getCommentDB());
   }, []);
-
+  // React.useEffect(() => {
+  //   dispatch(setCommentList);
+  // }, []);
   //포스트 삭제
   const deletePost = () => {
     alert("정말 삭제하시겠습니까?").then((response) => {

@@ -9,8 +9,11 @@ import styled from "styled-components";
 const MyPostList = (props) => {
   const dispatch = useDispatch();
 
+  const user = useSelector((state) => state.user);
   const userinfo = useSelector((state) => state.user.userinfo);
-
+  console.log(props);
+  console.log(userinfo.nickname);
+  console.log(props.nickname);
   const userId = props.userId;
   const mypost = useSelector((state) => state.mypage);
   console.log(mypost);
@@ -24,7 +27,9 @@ const MyPostList = (props) => {
       dispatch(mypageActions.myPostDB(userId));
     }
   }, []);
-
+  // useEffect(() => {
+  //   dispatch(mypageActions.setPost());
+  // }, []);
   const [post_list, setPostList] = useState([]);
 
   useEffect(() => {

@@ -69,6 +69,12 @@ export const apis = {
 
   chatRoomDelete: (roomId) => api.delete(`/chat/room/${roomId}`),
 
+  //코멘트 추가,삭제,불러오기
+  addComment: (postId, content) =>
+    api.post(`/api/comment/${postId}`, { postId: postId, content: content }),
+  delComment: (commentId) => api.delete(`/api/comment/${commentId}`),
+  getComments: (postId) => api.get(`/api/post`),
+
   //마이페이지 게시글 조회 및 프로필 편집
   getMyPost: (userId) => api.get(`/user/mypage/${userId}`, { userId: userId }),
 };
