@@ -54,6 +54,7 @@ export const delPostDB = (postId) => {
         apis.deletePost(postId)
             .then((response) => {
                 dispatch(delPost(postId));
+                dispatch(setPostDB())
             })
     }
 }

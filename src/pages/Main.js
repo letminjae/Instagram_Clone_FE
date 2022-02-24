@@ -3,10 +3,6 @@ import Header from '../components/Header'
 import Story from "../components/Story";
 import Recommand from "../components/Recommand";
 import PostList from "../components/PostList";
-import Post from "../components/Post";
-
-import { setPostDB } from "../redux/modules/postReducer";
-import { useDispatch } from "react-redux";
 
 import styled from "styled-components";
 import Signin from './Signin'

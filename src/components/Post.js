@@ -17,7 +17,6 @@ import { addLikeDB } from "../redux/modules/likeReducer";
 import { delPostDB } from "../redux/modules/postReducer";
 import { addCommentDB } from "../redux/modules/commentReducer";
 import { apis } from "../shared/api";
-import { set } from "lodash";
 
 export default function Post(props) {
   //props 값
@@ -25,7 +24,7 @@ export default function Post(props) {
   const postId = post.postId
   const imageUrl = post.imageUrl
   const liked = post.liked;
-  const createdAt = post.createdAt
+  const createdAt = post.createdAt?.split("T")[0]
 
   //디스패치
   const dispatch = useDispatch();
@@ -66,9 +65,6 @@ export default function Post(props) {
       dispatch(delPostDB(postId))
       setMoreInfo(false);
       alert("삭제 완료!");
-      // history.replace('/')
-    } else {
-      return;
     }
   }
 

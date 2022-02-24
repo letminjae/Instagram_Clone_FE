@@ -26,6 +26,7 @@ const PostList = () => {
         <React.Fragment>
             <InfinityScroll>
                 {data && data.map((p, i) => {
+                    
                     const postId = p.id;
                     const userId = p.uid;
                     const nickname = p.nickname;

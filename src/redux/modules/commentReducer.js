@@ -60,7 +60,7 @@ export const loadCommentDB =
     .then((res) => {
       deleteComment(commentId);
       alert("댓글 삭제완료!");
-      // dispatch(loadCommentDB(postId));
+      dispatch(loadCommentDB(postId));
     });
   };
 

@@ -34,7 +34,7 @@ export default function CommentDetail(props) {
     const postUsername = props.postUsername;
     const postProfileUrl = props.postProfileUrl;
     const postContent = props.postContent;
-    const postCreatedAt = props.postCreatedAt.split("T")[1].split(":")[0];
+    const postCreatedAt = props.postCreatedAt?.split("T")[0]
     const postLikeCount = props.postLikeCount;
 
     //포스트, 코멘트 불러옴
@@ -125,7 +125,7 @@ export default function CommentDetail(props) {
                                             postContent.split("\n").map((content, index) => {
                                                 return <div key={index}>{content}</div>;
                                             })}
-                                        <ModifiedAt>{postCreatedAt}시간 전</ModifiedAt>
+                                        <ModifiedAt>{postCreatedAt}</ModifiedAt>
                                         <PostTitleImgArea
                                             style={{
                                                 position: "absolute",

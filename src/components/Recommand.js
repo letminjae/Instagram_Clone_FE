@@ -13,7 +13,7 @@ export default function Recommand() {
                     alt="user"
                 />
                 <Name>
-                    <NickName>anonymous</NickName>
+                    <NickName>admin</NickName>
                 </Name>
                 <Conversion>깃허브</Conversion>
             </MyProfile>
@@ -95,7 +95,7 @@ const Wrap = styled.div`
     position: fixed;
     top: 130px;
     right: 15%;
-    left: 61.5%;
+    left: 62.5%;
     @media screen and (max-width: 920px) {
         display: none;
     }
@@ -127,7 +127,7 @@ const Conversion = styled.div`
     color : #4368FF;
     font-weight: bold;
     font-size: 12px;
-    padding: 5px 0px 0px 62px;
+    padding: 5px 0px 0px 104px;
 `
 
 const BackConversion = styled.div`
