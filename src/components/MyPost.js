@@ -16,15 +16,11 @@ const MyPost = (props) => {
   const [post_list, setPostList] = React.useState([]);
   const user = useSelector((state) => state.user);
   const userinfo = useSelector((state) => state.user.userinfo);
-  console.log(props);
-  console.log(userinfo.nickname);
-  console.log(props.nickname);
+
   const userId = props.userId;
   const mypost = useSelector((state) => state.mypage);
   console.log(mypost);
   console.log(mypost.list);
-  const count = Object.keys(mypost).length;
-  console.log(count);
   console.log(mypost.list.imageUrl);
   console.log(userinfo.nickname === props.nickname);
   useEffect(() => {
