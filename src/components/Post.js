@@ -232,7 +232,7 @@ export default function Post(props) {
           </>
         )}
 
-        {/* 댓글 모두 보기 (추후 기능) */}
+        {/* 댓글 모두 보기 */}
         {post.commentCount > 0 && (
           <CommentsShow
             onClick={() => {

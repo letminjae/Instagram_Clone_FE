@@ -309,19 +309,16 @@ const ModalArea = styled.div`
       display: flex;
       box-sizing: border-box;
     }
-    /* @media (width < 600) {
-      display: block;
-    } */
   `;
 
 const LeftArea = styled.div`
-    width: 70%;
-    max-width: 600px;
+    width: 100%;
+    max-width: 670px;
   `;
 
 const Img = styled.img`
     width: 100%;
-    max-height: 612px;
+    height: 670px;
   `;
 
 const RightArea = styled.div`
