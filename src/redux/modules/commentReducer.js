@@ -62,6 +62,7 @@ export const loadCommentDB =
       alert("댓글 삭제완료!");
       dispatch(loadCommentDB(postId));
     });
+    
   };
 
 // reducer
