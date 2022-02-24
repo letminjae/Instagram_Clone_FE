@@ -9,25 +9,25 @@ import { setPostDB } from "../redux/modules/postReducer";
 import { useDispatch } from "react-redux";
 
 import styled from "styled-components";
+import Signin from './Signin'
 
 const Main = () => {
-  // const dispatch = useDispatch();
-
-  // React.useEffect(() => {
-  //   if (document.cookie) {
-  //     // dispatch(loginActions.loginCheckDB());
-  //     dispatch(setPostDB())
-  //   }
-  // }, []);
+  const token = document.cookie;
 
   return (
     <React.Fragment>
-      <Header />
+
+      {(token && (
+        <>
+        <Header />
         <Wrap>
           <Story />
           <PostList />
           <Recommand />
         </Wrap>
+        </>
+      )) || <Signin />}
+      
     </React.Fragment>
   )
 }

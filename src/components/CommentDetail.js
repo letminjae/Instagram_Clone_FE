@@ -77,7 +77,7 @@ export default function CommentDetail(props) {
     };
 
     const deleteComment = (commentId1) => {
-        dispatch(deleteCommentDB(postId, commentId1));
+        dispatch(deleteCommentDB(commentId1));
     };
 
     return (
@@ -141,7 +141,8 @@ export default function CommentDetail(props) {
                                     </div>
                                     {comments &&
                                         comments.map((comment, key) => {
-                                            const commentId1 = comment.id;
+                                            console.log(comment)
+                                            const commentId1 = comment.commentId;
                                             return (
                                                 <Comments key={key} id={key}>
                                                     <PostTitle>{comment.nickname}</PostTitle>
@@ -156,7 +157,7 @@ export default function CommentDetail(props) {
                                                     <CommentFooter>
                                                         <ModifiedAt>{postCreatedAt}시간 전</ModifiedAt>
 
-                                                        <Like>좋아요 {postLikeCount}개</Like>
+                                                        <Like>좋아요 0개</Like>
 
                                                         <ReComment>답글 달기</ReComment>
                                                     </CommentFooter>
@@ -202,17 +203,17 @@ export default function CommentDetail(props) {
                                                             >
                                                                 신고
                                                             </ModalWrap>
-                                
-                                                           <ModalWrap
-                                                               style={{ color: "red", fontWeight: "900" }}
-                                                               onClick={() => {
-                                                                   deleteComment(commentId1);
-                                                                   setCommentInfoModal(false);
-                                                               }}
-                                                           >
-                                                               삭제
-                                                           </ModalWrap>
-                                                    
+
+                                                            <ModalWrap
+                                                                style={{ color: "red", fontWeight: "900" }}
+                                                                onClick={() => {
+                                                                    deleteComment(commentId1);
+                                                                    setCommentInfoModal(false);
+                                                                }}
+                                                            >
+                                                                삭제
+                                                            </ModalWrap>
+
                                                             <ModalWrap
                                                                 style={{ color: "red", fontWeight: "900" }}
                                                             >
@@ -254,16 +255,16 @@ export default function CommentDetail(props) {
                                         />
                                     )}
 
-                                
-                                    <IoChatbubbleOutline size="28" style={{ margin: "8px" }} />
-                            
-                                    <IoMdPaperPlane size="28" style={{ margin: "8px" }} />
-                            
-                                    <RiBookmarkLine
-                                        size="28"
-                                        style={{ position: "absolute", top: "10px", right: "8px" }}
-                                    />
-                
+
+                                <IoChatbubbleOutline size="28" style={{ margin: "8px" }} />
+
+                                <IoMdPaperPlane size="28" style={{ margin: "8px" }} />
+
+                                <RiBookmarkLine
+                                    size="28"
+                                    style={{ position: "absolute", top: "10px", right: "8px" }}
+                                />
+
 
                                 {liked && <Liked>좋아요 {likeValue + delLiked}개</Liked>}
                                 {liked || <Liked>좋아요 {likeValue + addLiked}개</Liked>}

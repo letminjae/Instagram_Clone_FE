@@ -66,7 +66,7 @@ export default function Post(props) {
       dispatch(delPostDB(postId))
       setMoreInfo(false);
       alert("삭제 완료!");
-      history.replace('/')
+      // history.replace('/')
     } else {
       return;
     }
@@ -282,7 +282,7 @@ export default function Post(props) {
     
 
         {/* 시간 */}
-        <ModifiedAt>{createdAt}시간 전</ModifiedAt>
+        <ModifiedAt>{createdAt}</ModifiedAt>
 
         {/* 댓글 작성 기능*/}
         <WriteComment>

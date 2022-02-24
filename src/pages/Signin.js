@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import {} from "react-icons";
 import { Grid, Text, Button, IconButton, Input, Image } from "../elements";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/userReducer";

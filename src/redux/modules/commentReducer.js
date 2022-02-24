@@ -37,7 +37,7 @@ export const addCommentDB =
         }
         alert("댓글달기 성공!");
         dispatch(addComment(res.data, state[index]));
-        dispatch(setPostDB()).then(console.log("갯수추가 완료"));
+        dispatch(setPostDB())
         dispatch(loadCommentDB(postId))
           .then(console.log("댓글로딩완료"))
           .catch((e) => console.log(e));
@@ -53,13 +53,14 @@ export const loadCommentDB =
     });
   };
 
-export const deleteCommentDB =
+  export const deleteCommentDB =
   (postId, commentId) =>
   (dispatch, getState, { history }) => {
-    apis.deleteComment(postId, commentId).then((res) => {
-      dispatch(loadCommentDB(postId));
+    apis.deleteComment(postId, commentId)
+    .then((res) => {
       deleteComment(commentId);
-      alert("댓글 삭제");
+      alert("댓글 삭제완료!");
+      // dispatch(loadCommentDB(postId));
     });
   };
 
@@ -75,7 +76,7 @@ export default handleActions(
     [COMMENT]: (state, action) =>
       produce(state, (draft) => {
         draft.list.push(action.payload.comment);
-        draft.list.push((action.payload.store.numOfComments += 1));
+        draft.list.push((action.payload.store.commentCount += 1));
       }),
     [DELETE]: (state, action) => {
       return {
