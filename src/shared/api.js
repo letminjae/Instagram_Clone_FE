@@ -69,8 +69,7 @@ export const apis = {
   chatRoomDelete: (roomId) => api.delete(`/chat/room/${roomId}`),
 
   //유저 정보 불러오기
-  getUser : () => api.get("/api/users"),
-
+  getUser: () => api.get("/api/users"),
 
   //댓글
   getComment: (postId) => api.get(`/api/comment/${postId}`, {}),
@@ -78,12 +77,10 @@ export const apis = {
   addComment: (postId, content) =>
     api.post(`/api/comment/${postId}`, { content }),
 
-  deleteComment: (commentId) =>
-    api.delete(`/api/comment/${commentId}`, {}),
-     
+  deleteComment: (commentId) => api.delete(`/api/comment/${commentId}`, {}),
+
   //마이페이지 게시글 조회
   getMyPost: (userId) => api.get(`/user/mypage/${userId}`, { userId: userId }),
-};
 
   //채팅
   //채팅방 생성(유저아이디를 누르면 됨)
@@ -100,10 +97,7 @@ export const apis = {
 
   //채팅방 나가기
   chatRoomDelete: (roomId) => api.delete(`api/chat/room/${roomId}`),
-
 };
-
-
 
 export const apisMultipart = {
   addPost: (formdata) => apiMultipart.post("/api/post", formdata),
